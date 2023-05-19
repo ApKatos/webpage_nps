@@ -23,23 +23,19 @@
       </div>
     </div>
     <!-- TODO -->
-    <v-btn :active="allVarsSubmitted" @click="createJSONfromVariables('Form cannot be submitted yet.', allVarsSubmitted)"
-      block>SUBMIT & COMPUTE</v-btn>
+    <!-- <v-btn :active="allVarsSubmitted" @click="createJSONfromVariables('Form cannot be submitted yet.', allVarsSubmitted)"
+      block>SUBMIT & COMPUTE</v-btn> -->
   </div>
 </template>
 
 <script type="module">
 import HistogramC2 from "../components/Histogram_C2.vue";
 import jsonData from "../json/pats_fixedbug_intervals.json";
-// import jsonData from "../json/test.json"
 import MySlider from "../components/Slider.vue";
 import BinaryButtons from "@/components/BinaryButtons.vue";
 import VarBox from '../components/varInfoBox.vue';
-
 import getRes from '../utils/client.ts';
 
-// const myModel = require("./client").getRes
-// rucne nastavit v datach max hodnoty pre AFP
 // prepisat  labels z 0,1 na NO, YES
 export default {
   components: { HistogramC2, MySlider, BinaryButtons, VarBox },
@@ -56,22 +52,22 @@ export default {
         this.variables.push(value);
       });
     },
-    createJSONfromVariables(message, event) {
-      if (event) {
-        let arr = {};
-        for (let variable in this.variables) {
-          console.log(variable)
-          arr[variable.varname] = variable.value
-        }
-        console.log(arr)
-        let JSONoutput = JSON.stringify(arr)
-        let computed = getRes(JSONoutput)
-        console.log(computed)
-        return JSONoutput;
-      } else {
-        alert(message)
-      }
-    }
+    // createJSONfromVariables(message, event) {
+    //   if (event) {
+    //     let arr = {};
+    //     for (let variable in this.variables) {
+    //       console.log(variable)
+    //       arr[variable.varname] = variable.value
+    //     }
+    //     console.log(arr)
+    //     let JSONoutput = JSON.stringify(arr)
+    //     let computed = getRes(JSONoutput)
+    //     console.log(computed)
+    //     return JSONoutput;
+    //   } else {
+    //     alert(message)
+    //   }
+    // }
   },
   mounted() {
     this.loadData();
