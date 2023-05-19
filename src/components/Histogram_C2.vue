@@ -3,36 +3,51 @@
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Bar } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 export default {
-  name: 'HistogramC',
+  name: "HistogramC",
   components: { Bar },
   data() {
     return {
       // valueData: this.value,
       labelDataVals: this.dataInp,
-    }
+    };
   },
   props: {
     labelsInp: {
       Array,
-      required: true
+      required: true,
     },
     dataInp: {
       Array,
-      required: true
+      required: true,
     },
     dataName: {
       String,
-      require: true
+      require: true,
     },
     value: {
-      default: ""
-    }
+      default: "",
+    },
   },
   methods: {
     handleChartClick(event, elements, labelsInp) {
@@ -40,31 +55,39 @@ export default {
         const clickedBarIndex = elements[0].index;
         // Perform your desired action with the clicked bar index
         // For example, emit an event or update a variable in the parent component
-        this.handleBarClick(clickedBarIndex, labelsInp.data.labels,)
+        this.handleBarClick(clickedBarIndex, labelsInp.data.labels);
       }
     },
     handleBarClick(index, labelData) {
       // Handle the bar click event here
       if (labelData.length == 2) {
-        let val = labelData[index]
+        let val = labelData[index];
         if (val == "NO") {
-          this.valueData = 0
+          this.valueData = 0;
+          console.log(this.valueData);
         } else if (val == "YES") {
-          this.valueData = 1
+          this.valueData = 1;
+          console.log(this.valueData);
         }
-        console.log(val)
-        console.log(this.valueData)
+        console.log(val);
+        console.log(this.valueData);
       } else {
         let upval = labelData[index].split("=")[1];
-        console.log(upval)
+        console.log(upval);
         let downval = labelData[index].split("<")[0];
-        console.log(downval)
+        console.log(downval);
 
-        if ((this.valueData == "") || (this.valueData > upval || this.valueData <= downval)) {
-          this.valueData = Number((Number.parseFloat(upval) + Number.parseFloat(downval)) / 2).toFixed(1)
+        if (
+          this.valueData == "" ||
+          this.valueData > upval ||
+          this.valueData <= downval
+        ) {
+          this.valueData = Number(
+            (Number.parseFloat(upval) + Number.parseFloat(downval)) / 2
+          ).toFixed(1);
         }
-        console.log('Clicked bar index:', index);
-        console.log("value set on ", this.valueData)
+        console.log("Clicked bar index:", index);
+        console.log("value set on ", this.valueData);
       }
     },
   },
@@ -72,26 +95,28 @@ export default {
     passData() {
       return {
         labels: this.labelsInp,
-        datasets: [{
-          data: this.dataInp,
-          label: "observed count",
-          barPercentage: 1, //aligns bars next to each other
-          categoryPercentage: 1, //aligns bars next to each other
-          backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          minBarLength: 5,
-          borderColor: 'rgba(0, 0, 0)',
-          borderWidth: 1,
-          // inflateAmount: 1,  
-          hoverBackgroundColor: '#013519',
-          hoverBorderColor: 'rgba(0, 0, 0)',
-          hoverBorderWidth: 5,
-          hoverBorderRadius: 1,
-        }],
-      }
+        datasets: [
+          {
+            data: this.dataInp,
+            label: "observed count",
+            barPercentage: 1, //aligns bars next to each other
+            categoryPercentage: 1, //aligns bars next to each other
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            minBarLength: 5,
+            borderColor: "rgba(0, 0, 0)",
+            borderWidth: 1,
+            // inflateAmount: 1,
+            hoverBackgroundColor: "#013519",
+            hoverBorderColor: "rgba(0, 0, 0)",
+            hoverBorderWidth: 5,
+            hoverBorderRadius: 1,
+          },
+        ],
+      };
     },
     passOptions() {
       return {
-        // this will be passed as one object in the attribute options 
+        // this will be passed as one object in the attribute options
         scales: {
           x: {
             display: true,
@@ -99,10 +124,10 @@ export default {
               callback: function (value, index, ticks) {
                 // return this.getLabelForValue(value)
                 const label = this.getLabelForValue(value).toString();
-                const num1 = label.split('<')[0];
-                return num1
-              }
-            }
+                const num1 = label.split("<")[0];
+                return num1;
+              },
+            },
           },
           // y: {
           //   display: true,
@@ -115,34 +140,34 @@ export default {
             text: this.dataName,
             padding: {
               top: 10,
-              bottom: 10
+              bottom: 10,
             },
             font: {
-              weight: 'bold',
+              weight: "bold",
               size: 14,
-              family: 'Helvetica'
-            }
-          }
+              family: "Helvetica",
+            },
+          },
         },
         responsive: true,
         onClick: this.handleChartClick,
-      }
+      };
     },
     valueData: {
       get() {
         return this.value; // Set the selected value based on the prop value
       },
       set(newValue) {
-        this.$emit('update:value', newValue); // Emit the updated value to the parent component
+        this.$emit("update:value", newValue); // Emit the updated value to the parent component
       },
-    }
+    },
   },
   watch: {
     valueData: {
       handler(val) {
-        this.$emit('update:value', val)
-      }
-    }
+        this.$emit("update:value", val);
+      },
+    },
   },
-}
+};
 </script>

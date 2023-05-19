@@ -1,8 +1,11 @@
 <template>
   <div class="bg-success">
-    <div id="container" v-for="variable in  variables " :key="variable.varname">
-      <div>
+    <!-- here div with box items -->
+    <var-box :variables="variables" app density="compact"></var-box>
+    <div id="container" v-for="variable in variables " :key="variable.varname">
+      <div :id="variable.index">
         <p>{{ variable.value }}</p>
+        <p> {{ allVarsSubmitted }}</p>
         <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
           v-on:update:value="variable.value = $event" :value="variable.value">
         </HistogramC2>
@@ -17,20 +20,29 @@
             :value="variable.value" v-on:update:value="variable.value = $event">
           </MySlider>
         </div>
-
       </div>
     </div>
+    <!-- TODO -->
+    <v-btn :active="allVarsSubmitted" @click="createJSONfromVariables('Form cannot be submitted yet.', allVarsSubmitted)"
+      block>SUBMIT & COMPUTE</v-btn>
   </div>
 </template>
 
-<script>
+<script type="module">
 import HistogramC2 from "../components/Histogram_C2.vue";
-import jsonData from "../json/pats_json_lower_upper_bounds.json";
+import jsonData from "../json/pats_fixedbug_intervals.json";
+// import jsonData from "../json/test.json"
 import MySlider from "../components/Slider.vue";
 import BinaryButtons from "@/components/BinaryButtons.vue";
+import VarBox from '../components/varInfoBox.vue';
 
+import getRes from '../utils/client.ts';
+
+// const myModel = require("./client").getRes
+// rucne nastavit v datach max hodnoty pre AFP
+// prepisat  labels z 0,1 na NO, YES
 export default {
-  components: { HistogramC2, MySlider, BinaryButtons },
+  components: { HistogramC2, MySlider, BinaryButtons, VarBox },
   data() {
     return {
       alertUser: true,
@@ -44,9 +56,35 @@ export default {
         this.variables.push(value);
       });
     },
+    createJSONfromVariables(message, event) {
+      if (event) {
+        let arr = {};
+        for (let variable in this.variables) {
+          console.log(variable)
+          arr[variable.varname] = variable.value
+        }
+        console.log(arr)
+        let JSONoutput = JSON.stringify(arr)
+        let computed = getRes(JSONoutput)
+        console.log(computed)
+        return JSONoutput;
+      } else {
+        alert(message)
+      }
+    }
   },
   mounted() {
     this.loadData();
+  },
+  computed: {
+    allVarsSubmitted() {
+      for (let variable of this.variables) {
+        if (variable.value == null) {
+          return false
+        }
+      }
+      return true
+    },
   },
 };
 </script>

@@ -24,9 +24,20 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/**/*.json"
+    "src/**/*.json",
+    // "src/utils/client.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["node_modules"],
-  "typeRoots": ["./typings", "./node_modules/@vue-plotly/"]
+  "typeRoots": ["./typings", "./node_modules/@vue-plotly/"],
+
+  "ts-node": {
+    //https://stackoverflow.com/a/71907867/14375843
+
+    // these options are overrides used only by ts-node
+    // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }
