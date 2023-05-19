@@ -64,6 +64,9 @@ export default {
         let val = labelData[index];
         if (val == "NO") {
           this.valueData = 0;
+          // this.$nextTick(()=> {
+          //   console.log(this.valueData)
+          // })
           console.log(this.valueData);
         } else if (val == "YES") {
           this.valueData = 1;

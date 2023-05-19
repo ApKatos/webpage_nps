@@ -1,6 +1,5 @@
 <template>
   <div class="bg-success">
-    <!-- here div with box items -->
     <var-box :variables="variables" app density="compact"></var-box>
     <div id="container" v-for="variable in variables " :key="variable.varname">
       <div :id="variable.index">
@@ -28,20 +27,21 @@
   </div>
 </template>
 
-<script type="module">
-import HistogramC2 from "../components/Histogram_C2.vue";
-import jsonData from "../json/pats_fixedbug_intervals.json";
-import MySlider from "../components/Slider.vue";
-import BinaryButtons from "@/components/BinaryButtons.vue";
-import VarBox from '../components/varInfoBox.vue';
-import getRes from '../utils/client.ts';
+<script>
+import HistogramC2 from "../components/Histogram_C2.vue"
+import jsonData from "../json/pats_fixedbug_intervals.json"
+import MySlider from "../components/Slider.vue"
+import BinaryButtons from "@/components/BinaryButtons.vue"
+import VarBox from '../components/varInfoBox.vue'
+// import getRes from '../utils/client.ts';
 
 // prepisat  labels z 0,1 na NO, YES
+// upravit max range pri AFP (?) na nizsie cislo
+// pridat steps 1 k premennym AGE, TUMOR_NODULES 
 export default {
   components: { HistogramC2, MySlider, BinaryButtons, VarBox },
   data() {
     return {
-      alertUser: true,
       variables: [],
     };
   },
