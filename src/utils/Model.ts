@@ -1,34 +1,106 @@
-import encodedFiles from "./resources/data_base64_encoded_joined.json";
-
+import encodedFiles from "../json/data_base64_encoded_joined.json";
 
 function getFileData(fileName: string): string {
   // @ts-ignore
-  let a = atob(encodedFiles[fileName]);
+  let content = encodedFiles[fileName];
+  let a = atob(content);
   return a;
 }
 
-export class Controller {
+export class ModelWrapper {
   protected model: Model;
-  public constructor(model: Model) {
-    this.model = model;
+  private metadata: string = "HCCDCP_25_HCC_2022_WITH_NPS_METADATA.txt";
+  private normsxy: string = "NormsXY_NPS_Level_II.csv";
+  private cbThreshold: string = "cb2_thresholds.txt";
+  private patients: string = "HCC_2022_WITH_NPS_RawDataExport_ExportID2.csv";
+  public constructor() {
+    this.model = new Model(
+      this.metadata,
+      this.normsxy,
+      this.cbThreshold,
+      this.patients
+    );
   }
 
-  public static main(): void {
-    let metadata: string = "HCCDCP_25_HCC_2022_WITH_NPS_METADATA.txt";
-    let normsXY: string = "NormsXY_NPS_Level_II.csv";
-    let cbThreshold: string = "cb2_thresholds.txt";
-    let patientsPath: string = "HCC_2022_WITH_NPS_RawDataExport_ExportID2.csv";
-    let model: Model = new Model(metadata, normsXY, cbThreshold, patientsPath);
+  public process(dataVariableForm: string): string {
+    // console.log("dostala som " + dataVariableForm);
+    // dataVariableForm =
+    //   "000000284,0,46,1,0,1,3,0,4.2,.6,1.22,1,1,1.4,1,2.7,14.6,257,0,4433,145,0,5280,.230048368,.685761198,9,-.45571283,30.23098292";
+    // console.log("ale idem spracovat " + dataVariableForm);
+    let result;
+    try {
+      let modelInput = this.processInput(dataVariableForm);
+      let pat = this.model.createPatient(modelInput, false);
+      result = this.model.evalPat(pat);
+    } catch (_e) {
+      if (_e instanceof Error) {
+        let e: Error = _e;
+        result = e.message;
+      } else {
+        result = _e as string;
+      }
+    }
+    console.log(result);
+    return result;
+  }
 
-    let controller: Controller = new Controller(model);
-  
-    let s2 =
-      "000000106,0,77,0,1,1,1.7,0,3.5,.6,1.18,.26,.7,1.11,.65,1101,11.4,317,1,761,25,1,8660,.676871126,.369854417,19,.307016709,78.04776302";
-    let p = controller.model.createPatient(s2, false);
-    let res_p = controller.model.evalPat(p);
+  private checkModelInputSequence(input: string) {
+    // Checking if the sequence of patients values to be entered into model is valid
+    // .. "1,2,8,6,7,....,.."
+    let items = input.split(",");
+    let inputSize = items.length;
 
-    console.log(res_p);
-   }
+    if (inputSize >= this.model.getMetadata().getInputVarNum() + 1) {
+      // String input contains all input values including ID
+      // or input values are from training cohort with all parameters
+      console.log(
+        "the patient has ID, vars, and probably output var      " + input
+      );
+
+      return input;
+    } else if (inputSize == this.model.getMetadata().getInputVarNum()) {
+      // Probably value for the patient's ID is missing
+      let id = 9999;
+      let result = [id, input].join(",");
+      console.log("resulting is " + result + "(before it was" + input + ")");
+      return result;
+    } else {
+      throw SyntaxError("Patiens's input values are not valid");
+    }
+  }
+
+  private processInput(input: string): string {
+    // input="9999,0,74,0,1,1,6,0,3.4,.7,.91,1,1,1.2,1,7,14.9,252"
+    // console.log("tu som vlozila vlastne hodnoty a velkost toho je "+input.split(",").length)
+    let varNames = this.model.getMetadata().getVarNamesInput(); // ordered list array of variable names
+    try {
+      let varValInput = JSON.parse(input); // Parse JSON with input variable values
+      // Save values into format the model accepts => 18 parameeters split by comma
+      // "1,2,3"
+      let _orderedVarValsForModel = [];
+
+      for (let variable in varNames) {
+        let variableName = varNames[variable];
+        let value = varValInput[variableName];
+        console.log(variableName + " the value " + value);
+        _orderedVarValsForModel.push(value);
+      }
+      let orderedVarValsForModel = _orderedVarValsForModel.join(","); //This contains ordered variables and the value but NO PATIENTS ID
+      console.log(
+        orderedVarValsForModel +
+          "    those are variables and the value but NO PATIENTS ID"
+      );
+
+      return this.checkModelInputSequence(orderedVarValsForModel);
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        console.log("Input is not JSON type, returning plain string back");
+        return this.checkModelInputSequence(input);
+      } else {
+        throw e;
+      }
+    }
+  }
 }
 export class Model {
   protected metadata: Metadata;
@@ -71,29 +143,30 @@ export class Model {
   private readPatients(): string[] {
     let patients: string[] = new Array();
 
-    let data= getFileData(this.patientsPath)
-    let arr = data.split("\n")
+    let data = getFileData(this.patientsPath);
+    let arr = data.split("\n");
 
     console.log(this.patientsPath);
     let counter = 1;
 
-    
-    for(let i=0; i<arr.length;i++) {
-      let line = arr[i]
-      if (line=="")
-        continue
+    for (let i = 0; i < arr.length; i++) {
+      let line = arr[i];
+      if (line == "") continue;
 
       if (line.split(",")[0] == "PAT_ID") {
-        continue
+        continue;
       } else {
         patients.push(line);
         console.log(counter++);
       }
-    };
+    }
     // bufferStream.close();
     return patients;
   }
 
+  public getMetadata(): Metadata {
+    return this.metadata;
+  }
   public evalPat(patient: Patient): string {
     let clinicalBurden2: number = 0.0;
 
@@ -154,8 +227,11 @@ export class Model {
 
       patient.setNPS2(nps2);
       clinicalBurden2 = this.clinicalBurden(patient.getNPS2());
+
+      //TODO - checkni ze ci tu ma byt upper alebo main, dava zmysel mail
+      // TODO - opytaj sa este raz na vyznam upper a lowe thr - ak chapem spravne ked vyde CB2 medzi nimi tak s pacientom sa da manipulovat este
       if (
-        clinicalBurden2 < this.cbThr.getUpperThr(patient.getPhenotypeGroup())
+        clinicalBurden2 < this.cbThr.getMainThr(patient.getPhenotypeGroup())
       ) {
         patient.setClinicalBurden2(clinicalBurden2);
         patient.setAlive(true);
@@ -164,17 +240,26 @@ export class Model {
         patient.setAlive(false);
       }
     }
-    let res = this.getJSONRes(patient)
-    return res
+    let res = this.getJSONRes(patient);
+    return res;
   }
 
-  public getJSONRes(p: Patient): string{
-    let phenotype: number = p.getPhenotypeGroup() //TODO check if the pehnotype group is the time encoded or raw
-    let JSONres=initResult(p.getNPS1() as unknown as number[], p.getNPS2() as unknown as number[] , 
-        p.getClinicalBurden2(), this.cbThr.getLowerThr(phenotype), this.cbThr.getMainThr(phenotype), 
-        this.cbThr.getUpperThr(phenotype), p.getPhenotypeGroup(), p.getTimeCodedPhenotype(), 
-        p.getProbOfDeath(),p.getAlive())
-    return JSON.stringify(JSONres)
+  public getJSONRes(p: Patient): string {
+    let phenotype: number = p.getPhenotypeGroup(); //TODO check if the pehnotype group is the time encoded or raw
+    let JSONres = initResult(
+      p.getNPS1() as unknown as number[],
+      p.getNPS2() as unknown as number[],
+      p.getClinicalBurden2(),
+      this.cbThr.getLowerThr(phenotype),
+      this.cbThr.getMainThr(phenotype),
+      this.cbThr.getUpperThr(phenotype),
+      p.getPhenotypeGroup(),
+      p.getTimeCodedPhenotype(),
+      p.getProbOfDeath(),
+      p.getAlive()
+    );
+
+    return JSON.stringify(JSONres);
   }
 
   public calculateNPS(
@@ -452,11 +537,9 @@ export class WeightMatrices extends PretrainedData {
     return weightMask;
   }
   private filesForType(type: string): string {
-    console.log("Hladam file type v weight masks");
     for (let file of this.masksName) {
       let fType: string = file.split("_")[0];
       if (fType.toUpperCase() == type) {
-        console.log(file + "vraciam tento file v fileForType pre wMasky DONE");
         return file;
       }
     }
@@ -517,14 +600,12 @@ export class Patient extends PretrainedData {
     super();
     this.model = model;
     this.numPartitions = model.getInputVarNum();
-    console.log("toto su numpartitions "+this.numPartitions)
     this.outputVars = new Array<number>(model.getOutputVarNum());
     this.cAdjMat = [];
     // TODO - pozri ci for cyklus robi to iste co by spravilo toto - new Array<number>(this.numPartitions)[];
     for (let index = 0; index < this.numPartitions; index++) {
       this.cAdjMat[index] = [];
     }
-    console.log("Vytvaram cAdjMat ")
     this.cAdjMat = this.createMatrix(patientInput);
   }
   public getPhenotypeGroup(): number {
@@ -532,9 +613,7 @@ export class Patient extends PretrainedData {
   }
 
   public setPhenotypeGroup(group: number): void {
-    for (let i: number = 1; i < Patient.tg.length; i++) {
-      if (Patient.tg[i] == group) this.timeCodedPhenotype = i; // set time encoded phenotype group that represents linear order of disease developing
-    }
+    this.timeCodedPhenotype = Patient.tg[group];
     this.phenotypeGroup = group;
   }
 
@@ -552,6 +631,12 @@ export class Patient extends PretrainedData {
     this.NPS1 = coords;
   }
   public setNPS2(coords: Coords): void {
+    if (coords.getX() > 1) coords.setX(1);
+    if (coords.getY() > 1) coords.setY(1);
+
+    if (coords.getX() < 0) coords.setX(0);
+    if (coords.getY() < 0) coords.setY(0);
+
     this.NPS2 = coords;
   }
   public getId(): number {
@@ -754,8 +839,6 @@ export class Metadata {
         const parts: string[] = line.split(/\s+/);
 
         if ("total" == parts[1].toLowerCase()) {
-          console.log("total amount");
-          console.log(parseInt(parts[0]));
           break; // kill the reading here
         }
 
@@ -1125,6 +1208,14 @@ export class Coords {
     return this.y;
   }
 
+  public setX(num: number) {
+    this.x = num;
+  }
+
+  public setY(num: number) {
+    this.y = num;
+  }
+
   public toString(): string {
     return "(" + this.x + ":" + this.y + ")";
   }
@@ -1132,11 +1223,11 @@ export class Coords {
 
 export class CBthr extends PretrainedData {
   protected thr: Map<number, number[]>;
-  //TODO filesLocation with .super() or .this()
 
   public constructor(fileName: string) {
     super();
     this.thr = this.read(fileName);
+    this.overwriteThrs();
   }
 
   private read(fileName: string): Map<number, number[]> {
@@ -1165,6 +1256,14 @@ export class CBthr extends PretrainedData {
       nps2_group = nps2_group + 1;
     }
     return read;
+  }
+
+  private overwriteThrs() {
+    for (let nps_i = 1; nps_i <= 25; nps_i++) {
+      let thrsForNPS: number[] = this.thr.get(nps_i)!;
+      thrsForNPS[1] = 0;
+      this.thr.set(nps_i, thrsForNPS);
+    }
   }
 
   public getMainThr(type: number): number {
@@ -1218,33 +1317,42 @@ export class CBthr extends PretrainedData {
 }
 
 type Result = {
-  NPS1: number[]
-  NPS2: number[]
-  ClinicalBurden: number
-  CB_lower: number
-  CB_main: number
-  CB_upper: number
-  RawPhenotype: number
-  TimePhenotype: number
-  ProbOfDeath: number
-  Alive: boolean
+  NPS1: number[];
+  NPS2: number[];
+  ClinicalBurden: number;
+  CB_lower: number;
+  CB_main: number;
+  CB_upper: number;
+  RawPhenotype: number;
+  TimePhenotype: number;
+  ProbOfDeath: number;
+  Alive: boolean;
+};
+function initResult(
+  nps1: number[],
+  nps2: number[],
+  clinicalburden: number,
+  cb_lower: number,
+  cb_main: number,
+  cb_upper: number,
+  rawphenotype: number,
+  timephenotype: number,
+  probofdeath: number,
+  alive: boolean
+): Result {
+  let res: Result = {
+    NPS1: nps1,
+    NPS2: nps2,
+    ClinicalBurden: clinicalburden,
+    CB_lower: cb_lower,
+    CB_main: cb_main,
+    CB_upper: cb_upper,
+    RawPhenotype: rawphenotype,
+    TimePhenotype: timephenotype,
+    ProbOfDeath: probofdeath,
+    Alive: alive,
+  };
+  return res;
 }
-function initResult(nps1: number[], nps2: number[], clinicalburden: number, cb_lower: number, cb_main:number, cb_upper:number,
-  rawphenotype: number, timephenotype: number, probofdeath: number, alive: boolean): Result {
-    let res: Result={
-      NPS1: nps1,
-      NPS2: nps2,
-      ClinicalBurden : clinicalburden,
-      CB_lower: cb_lower,
-      CB_main: cb_main,
-      CB_upper: cb_upper,
-      RawPhenotype: rawphenotype,
-      TimePhenotype: timephenotype,
-      ProbOfDeath: probofdeath,
-      Alive: alive
-    }
-    return res
-  }
 
-console.log("hallo");
-Controller.main();
+// module.exports=ModelWrapper

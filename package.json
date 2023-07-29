@@ -2,7 +2,6 @@
   "name": "NPS_website",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -21,13 +20,15 @@
     "plotly.js-dist-min": "^2.20.0",
     "roboto-fontface": "*",
     "simple-json-loader": "^1.0.0",
-    "vue": "^3.2.13",
+    "vite-raw-plugin": "^1.0.2",
+    "vue": "3.2.26",
     "vue-chartjs": "^5.2.0",
     "vue-plotly": "^1.1.0",
     "vue-plotly.js": "^1.1.0",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "webpack": "^5.88.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
@@ -39,9 +40,10 @@
     "eslint-plugin-vue": "^9.3.0",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
+    "raw-loader": "^4.0.2",
     "sass": "^1.55.0",
     "typescript": "^4.0.0",
-    "vite": "^3.0.9",
+    "vite": "^4.3.9",
     "vite-plugin-vuetify": "^1.0.0-alpha.12",
     "vue-tsc": "^1.0.9"
   }

@@ -16,6 +16,12 @@ const routes = [
         name: "Main",
         component: () => import("@/views/Main.vue"),
       },
+      {
+        path: "result",
+        name: "Result",
+        component: () => import("@/views/Results.vue"),
+        props: (route) => ({ result: route.query.result }),
+      },
     ],
   },
 ];

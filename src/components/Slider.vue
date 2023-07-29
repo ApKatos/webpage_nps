@@ -1,27 +1,23 @@
 <template>
-  <div class="d-flex flex-column">
-    <v-card width=600px style="padding: 20px 0px 0px 0px">
-      <div>
+  <v-card width=35vw style="padding: 20px 0px 0px 0px">
 
-        <v-slider v-model="valueData" step=0.1 density='compact' :color="color" thumb-size=10 thumb-label="always"
-          hight=50 :max="maxim" :min="minim">
+    <v-slider v-model="valueData" step=0.1 density='compact' :color="color" thumb-size=10 thumb-label="always" hight=50
+      :max="maxim" :min="minim">
 
-          <template v-slot:prepend>
-            <v-btn size="small" variant="text" icon="mdi-minus" color="red" @click="decrement(1)"
-              @dblclick="decrement(10)" @mousedown="startDecrement()" @mouseup="stopDecrement" @mouseleave="stopDecrement"></v-btn>
-          </template>
+      <template v-slot:prepend>
+        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @click="decrement(1)"
+          @mousedown="startDecrement()" @mouseup="stopDecrement" @mouseleave="stopDecrement"></v-btn>
+      </template>
 
-          <!-- BUTTON 2 -->
-          <template v-slot:append>
-            <v-btn size="small" variant="text" icon="mdi-plus" color="green" @click="increment(1)"
-              @dblclick="increment(10)"  @mousedown="startIncrement()" @mouseup="stopIncrement" @mouseleave="stopIncrement"></v-btn>
-          </template>
+      <!-- BUTTON 2 -->
+      <template v-slot:append>
+        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @click="increment(1)"
+          @mousedown="startIncrement()" @mouseup="stopIncrement" @mouseleave="stopIncrement"></v-btn>
+      </template>
 
-        </v-slider>
+    </v-slider>
 
-      </div>
-    </v-card>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -58,7 +54,7 @@ export default {
   },
   methods: {
     increment(times) {
-      this.valueData = Number((this.valueData + (0.1*times)).toFixed(1));
+      this.valueData = Number((this.valueData + (0.1 * times)).toFixed(1));
     },
     decrement(times) {
       this.valueData = Math.max(0, Number((this.valueData - (0.1 * times)).toFixed(1)));

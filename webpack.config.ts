@@ -1,4 +1,10 @@
-// module.rules = {
-//     test: /\.pug$/,
-//     loader: 'pug-plain-loader'
-//   }
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.txt$/i,
+        use: "raw-loader",
+      },
+    ],
+  },
+};
