@@ -1,23 +1,19 @@
 <template>
   <div class="grid-container">
-    <div
-      class="grid-item"
-      v-for="variable in variables"
-      :id="'button-' + variable.index"
-      :key="variable"
-      :style="{
-        backgroundColor: evaluatedColor(
-          variable.value,
-          variable.alert_high,
-          variable.alert_low
-        ),
-      }"
-    >
+    <div class="grid-item" v-for="variable in variables" :id="'button-' + variable.index" :key="variable" :style="{
+      backgroundColor: evaluatedColor(
+        variable.value,
+        variable.alert_high,
+        variable.alert_low
+      ),
+    }">
       <div>
-        {{ variable.varname }}
-      </div>
-      <div>
-        {{ variable.value }}
+        <div class="column" style="padding-left: 1em; font-size: 1.15vw;">
+          {{ variable.varname }}
+        </div>
+        <div class="column" style="text-align: right; padding-right: 1em; font-size: 1vw;">
+          {{ variable.value }}
+        </div>
       </div>
     </div>
   </div>
@@ -44,19 +40,6 @@ export default {
       };
     },
   },
-  // watch: {
-  // valueData: {
-  //   handler(val) {
-  //     this.$emit('update:value', val)
-
-  //     // ASI TO JE POMALE KED JE TO TU STALE
-  //     if (val != null && (val <= this.label95qLower || val >= this.label95qUpper)) {
-  //       this.color = this.colorWarn
-  //     } else if (val != null && val < this.label95qUpper && val > this.label95qLower) {
-  //       this.color = this.colorFine
-  //     }
-  //   }
-  // },
 };
 </script>
 
@@ -64,15 +47,26 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(17, auto);
-  background-color: #838383;
-  padding: 5px;
+  grid-template-columns: 1;
+  grid-template-rows: repeat(17, auto);
+  height: 100vh;
+  width: 15vw;
+  /* background-color: #838383; */
+  /* padding: 3px; */
 }
 
 .grid-item {
   background-color: #ff4500;
-  border: 2px solid rgba(0, 0, 0);
-  padding: 5px;
-  text-align: center;
+  border: 0.1em solid rgba(0, 0, 0);
+  padding: 0.2em;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.column value {
+  text-align: right;
 }
 </style>
