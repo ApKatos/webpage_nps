@@ -24,7 +24,7 @@
 export default {
   data() {
     return {
-      // valueData: this.value,
+      valueData: this.value,
       // clickTimeout: null, //https://blog.logrocket.com/building-a-long-press-directive-in-vue-3408d60fb511/
       color: "#a9a9a9",
       incrementInterval: null, // Variable to hold the interval ID
@@ -54,12 +54,13 @@ export default {
   },
   methods: {
     increment(times) {
-      this.valueData = Number((this.valueData + (0.1 * times)).toFixed(1));
+      this.valueData = Number((Number(this.valueData) + (0.1 * times))).toFixed(1);
     },
     decrement(times) {
       this.valueData = Math.max(0, Number((this.valueData - (0.1 * times)).toFixed(1)));
     },
     startIncrement() {
+      console.log("idem incrementovat " + typeof this.valueData)
       this.incrementInterval = setInterval(() => {
         this.increment(10); // Increment the variable value
       }, 50); // Adjust the interval duration as per your preference
@@ -79,14 +80,14 @@ export default {
     },
   },
   computed: {
-    valueData: {
-      get() {
-        return this.value; // Set the selected value based on the prop value
-      },
-      set(newValue) {
-        this.$emit('update:value', newValue); // Emit the updated value to the parent component
-      },
-    },
+    // valueData: {
+    //   get() {
+    //     return this.value; // Set the selected value based on the prop value
+    //   },
+    //   set(newValue) {
+    //     this.$emit('update:value', newValue); // Emit the updated value to the parent component
+    //   },
+    // },
     colorWarn: {
       get() {
         return "#FF8000"
@@ -112,6 +113,12 @@ export default {
         }
       }
     },
+    value: {
+      handler(val, oldVal) {
+        this.valueData = val
+      }
+    }
+
   }
 };
 </script>

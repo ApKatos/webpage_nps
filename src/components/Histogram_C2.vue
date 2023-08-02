@@ -28,7 +28,7 @@ export default {
   components: { Bar },
   data() {
     return {
-      // valueData: this.value,
+      valueData: this.value,
       labelDataVals: this.dataInp,
     };
   },
@@ -53,7 +53,6 @@ export default {
     handleChartClick(event, elements, labelsInp) {
       if (elements.length > 0) {
         const clickedBarIndex = elements[0].index;
-        // Perform your desired action with the clicked bar index
         // For example, emit an event or update a variable in the parent component
         this.handleBarClick(clickedBarIndex, labelsInp.data.labels);
       }
@@ -62,34 +61,32 @@ export default {
       // Handle the bar click event here
       if (labelData.length == 2) {
         let val = labelData[index];
-        if (val == "NO") {
+        if (val == "NO" || val == "MALE") {
           this.valueData = 0;
-          // this.$nextTick(()=> {
-          //   console.log(this.valueData)
-          // })
           console.log(this.valueData);
-        } else if (val == "YES") {
+        } else if (val == "YES" || val == "FEMALE") {
           this.valueData = 1;
           console.log(this.valueData);
         }
-        console.log(val);
-        console.log(this.valueData);
       } else {
         let upval = labelData[index].split("=")[1];
-        console.log(upval);
         let downval = labelData[index].split("<")[0];
         console.log(downval);
-
+        console.log(upval);
+        // console.log("this is this.valuedata pred nastavenim: " + this.valueData)
         if (
           this.valueData == "" ||
           this.valueData > upval ||
           this.valueData <= downval
         ) {
+          console.log("Prepisujem")
           this.valueData = Number(
             (Number.parseFloat(upval) + Number.parseFloat(downval)) / 2
           ).toFixed(1);
         }
-        console.log("Clicked bar index:", index);
+
+        // console.log("this is this.valuedata po prepisani: " + this.valueData)
+        // console.log("Clicked bar index:", index);
         console.log("value set on ", this.valueData);
       }
     },
@@ -156,21 +153,20 @@ export default {
         onClick: this.handleChartClick,
       };
     },
-    valueData: {
-      get() {
-        return this.value; // Set the selected value based on the prop value
-      },
-      set(newValue) {
-        this.$emit("update:value", newValue); // Emit the updated value to the parent component
-      },
-    },
   },
   watch: {
     valueData: {
-      handler(val) {
+      handler(val, oldVal) {
+        // console.log("   Hodnota valueDataje zmenena z " + oldVal + " na hodnotu " + val)
         this.$emit("update:value", val);
       },
     },
+    value: {
+      handler(val, oldVal) {
+        // console.log("Hodnota vstupneho propu je zmenena z " + oldVal + " na hodnotu " + val)
+        this.valueData = val
+      }
+    }
   },
 };
 </script>
