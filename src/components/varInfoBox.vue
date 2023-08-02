@@ -1,12 +1,12 @@
 <template>
   <div class="grid-container">
-    <div class="grid-item" v-for="variable in variables" :id="'button-' + variable.index" :key="variable" :style="{
+    <div class="grid-item" v-for="variable in variables" :id="'label-' + variable.index" :key="variable" :style="{
       backgroundColor: evaluatedColor(
         variable.value,
         variable.alert_high,
         variable.alert_low
       ),
-    }">
+    }" @click="scrollToGraph(variable.index)">
       <div>
         <div class="column" style="padding-left: 1em; font-size: 1.15vw;">
           {{ variable.varname }}
@@ -25,6 +25,14 @@ export default {
     variables: {
       Array,
       required: true,
+    },
+  },
+  methods: {
+    scrollToGraph(index) {
+      const graphElement = document.getElementById('input-graph-' + index);
+      if (graphElement) {
+        graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
+      }
     },
   },
   computed: {
@@ -49,7 +57,7 @@ export default {
   display: grid;
   grid-template-columns: 1;
   grid-template-rows: repeat(17, auto);
-  height: 100vh;
+  height: 93.5vh;
   width: 15vw;
   /* background-color: #838383; */
   /* padding: 3px; */
