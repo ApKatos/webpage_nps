@@ -1,31 +1,35 @@
 <template>
   <div class="bg-success">
-    <var-box :variables="variables" app density="compact"></var-box>
-    <div class="container" v-for="variable in variables " :key="variable.varname">
-      <div class="graph" :id="variable.index">
+    <div class="varbox">
+      <var-box :variables="variables" app density="compact"></var-box>
+    </div>
+    <div>
+      <div class="container" v-for="variable in variables " :key="variable.varname">
+        <div class="graph" :id="variable.index">
 
-        <!-- <p>{{ variable.value }}</p> -->
+          <!-- <p>{{ variable.value }}</p> -->
 
-        <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
-          v-on:update:value="variable.value = $event" :value="variable.value">
-        </HistogramC2>
-        <div v-if="variable.categ">
-          <BinaryButtons :labels="variable.labels" v-on:update:value="variable.value = $event" :value="variable.value"
-            :thrs="variable.thrs">
-          </BinaryButtons>
-        </div>
-        <div v-else>
-          <MySlider :label95q-lower="variable.alert_low" :label95q-upper="variable.alert_high" :maxim="variable.max"
-            :minim="variable.min" :relevant-thresholds="variable.thrs" :categorial="variable.categ"
-            :value="variable.value" v-on:update:value="variable.value = $event">
-          </MySlider>
+          <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
+            v-on:update:value="variable.value = $event" :value="variable.value">
+          </HistogramC2>
+          <div v-if="variable.categ">
+            <BinaryButtons :labels="variable.labels" v-on:update:value="variable.value = $event" :value="variable.value"
+              :thrs="variable.thrs">
+            </BinaryButtons>
+          </div>
+          <div v-else>
+            <MySlider :label95q-lower="variable.alert_low" :label95q-upper="variable.alert_high" :maxim="variable.max"
+              :minim="variable.min" :relevant-thresholds="variable.thrs" :categorial="variable.categ"
+              :value="variable.value" v-on:update:value="variable.value = $event">
+            </MySlider>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="endbutton">
-      <v-btn @click="callModel()" :disabled="!allVarsSubmitted" :loading="pressedButton">
-        block>SUBMIT & COMPUTE
-      </v-btn>
+      <div class="endbutton">
+        <v-btn @click="callModel()" :disabled="!allVarsSubmitted" :loading="pressedButton">
+          block>SUBMIT & COMPUTE
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -82,6 +86,7 @@ export default {
       let resultJSON = this.model.process(inputJSON)
       this.resultJSON = resultJSON;
       this.$router.push({ name: 'Result', query: { result: resultJSON } });
+
     }
   },
   mounted() {
@@ -102,6 +107,10 @@ export default {
 </script>
 
 <style scoped>
+.varbox {
+  position: fixed;
+}
+
 .container {
   display: flex;
   justify-content: center;
