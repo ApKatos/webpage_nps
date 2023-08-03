@@ -51,18 +51,15 @@ export default {
   align-items: center;
   height: 100%;
 
-  background-color: #EEE;
-  -webkit-transition:
-    background-color 700ms linear,
-    color 700ms linear;
+  background-image: linear-gradient(0.35turn, gray, lightgreen);
 }
 
 .child {
   padding: 1em;
 }
 
-.container:hover {
+/* .container:hover {
   background-color: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
   ;
-}
+} */
 </style>
