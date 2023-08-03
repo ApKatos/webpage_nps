@@ -1,8 +1,12 @@
 <template>
-  <div>
-    <h1>Welcome to the NPS - network phenotyping strategy</h1>
-    <warning @close="open = false" :v-show="open"></warning>
-    <v-btn to="main" center> START </v-btn>
+  <div class="container">
+    <h1>Welcome to the Network Phenotyping Strategy</h1>
+    <div class="child" v-show="open">
+      <warning @closingWarning="this.open = false"></warning>
+    </div>
+    <div class="child">
+      <v-btn to="main" :disabled="open" center> START </v-btn>
+    </div>
   </div>
 </template>
 
@@ -18,3 +22,47 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* @keyframes color-transition {
+  0% {
+    background-color: #ff0000;
+  }
+
+  50% {
+    background-color: #00ff00;
+  }
+
+  100% {
+    background-color: #0000ff;
+  }
+}
+
+.main {
+  animation: color-transition 1s infinite alternate;
+} */
+
+.container {
+  display: flex;
+  /* Use flexbox */
+  flex-direction: column;
+  /* Stack elements vertically */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  background-color: #EEE;
+  -webkit-transition:
+    background-color 700ms linear,
+    color 700ms linear;
+}
+
+.child {
+  padding: 1em;
+}
+
+.container:hover {
+  background-color: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
+  ;
+}
+</style>
