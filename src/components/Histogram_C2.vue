@@ -28,7 +28,8 @@ export default {
   components: { Bar },
   data() {
     return {
-      valueData: this.value,
+      // TODO - ono to nebude cislo ked nacitam z JSON a nastavim na null, problem, nastavit na -1????
+      valueData: Number(this.value),
       labelDataVals: this.dataInp,
     };
   },
@@ -73,10 +74,10 @@ export default {
         let downval = labelData[index].split("<")[0];
         console.log(downval);
         console.log(upval);
-        // console.log("this is this.valuedata pred nastavenim: " + this.valueData)
+        console.log(typeof this.valueData)
         if (
           this.valueData == "" ||
-          this.valueData > upval ||
+          this.valueData >= upval ||
           this.valueData <= downval
         ) {
           console.log("Prepisujem")
@@ -164,7 +165,7 @@ export default {
     value: {
       handler(val, oldVal) {
         // console.log("Hodnota vstupneho propu je zmenena z " + oldVal + " na hodnotu " + val)
-        this.valueData = val
+        this.valueData = Number(val)
       }
     }
   },
