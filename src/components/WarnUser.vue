@@ -13,7 +13,7 @@
                 for patient.
             </p>
 
-            <v-btn @click="close" variant="text" color="orange">I UNDERSTAND</v-btn>
+            <v-btn @click="$emit('closingWarning')" variant="text" color="orange">I UNDERSTAND</v-btn>
         </div>
     </v-sheet>
 </template>
@@ -22,7 +22,7 @@
 export default {
     methods: {
         close() {
-            this.$emit("close")
+            this.$emit("closingWarning")
         }
     }
 }
