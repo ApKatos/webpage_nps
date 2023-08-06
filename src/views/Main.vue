@@ -1,7 +1,7 @@
 <template>
   <div class="bg-success">
     <div class="varbox">
-      <infoTag>{{ this.variablesinfo }}</infoTag>
+      <infoTag style="margin-left: 14em; width: 14em;">{{ this.variablesinfo }}</infoTag>
       <var-box :variables="variables" app density="compact"></var-box>
     </div>
     <div>
@@ -114,6 +114,7 @@ export default {
 <style scoped>
 .varbox {
   position: fixed;
+  z-index: 99;
 }
 
 /* .bg {
