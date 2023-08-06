@@ -9,12 +9,16 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "7.0.96",
+    "@mdi/js": "^7.2.96",
     "axios": "^1.4.0",
     "buffer": "^6.0.3",
     "chart.js": "^4.2.1",
     "core-js": "^3.8.3",
     "jree": "^1.2.2",
+    "mitt": "^3.0.1",
+    "oh-vue-icons": "^1.0.0-rc3",
     "plotly.js": "^2.20.0",
     "plotly.js-dist": "^2.20.0",
     "plotly.js-dist-min": "^2.20.0",
