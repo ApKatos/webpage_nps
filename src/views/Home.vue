@@ -24,24 +24,6 @@ export default {
 </script>
 
 <style scoped>
-/* @keyframes color-transition {
-  0% {
-    background-color: #ff0000;
-  }
-
-  50% {
-    background-color: #00ff00;
-  }
-
-  100% {
-    background-color: #0000ff;
-  }
-}
-
-.main {
-  animation: color-transition 1s infinite alternate;
-} */
-
 .container {
   display: flex;
   /* Use flexbox */

@@ -13,10 +13,12 @@
                     <div class="text">
                         <div class="column">
                             <p>Patient's phenotype group: </p>
+                            <info-tag> {{ phenotypesdescribed }}</info-tag>
                             <label> {{ JSONresult.TimePhenotype }} </label>
                         </div>
                         <div class="column">
                             <p>Death probability among the group: </p>
+                            <info-tag> {{ probdeathdescribed }}</info-tag>
                             <label>{{ Math.round(JSONresult.ProbOfDeath) }}%</label>
                         </div>
                     </div>
@@ -25,6 +27,7 @@
 
             <div class="summary column">
                 <div class="result">
+                    <info-tag> {{ patientgreyarea }} </info-tag>
                     <div>
                         <canvas ref="nps2_picture" class="frame"></canvas>
                     </div>
@@ -34,6 +37,7 @@
                             display:flex; 
                             }">
                             <div class="column" style="margin-right: 1.5em;">
+                                <info-tag v-show="JSONresult.Alive"> {{ aliveInfo }}</info-tag>
                                 <label :style="{ color: JSONresult.Alive ? 'greenyellow' : 'gray' }" :class="{
                                     'highlighted-label':
                                         JSONresult.Alive
@@ -45,8 +49,11 @@
                                 <label :style="{ color: JSONresult.Alive ? ' grey' : 'tomato' }" :class="{
                                     'highlighted-label':
                                         !JSONresult.Alive
-                                }"> DEAD </label>
+                                }"> DEAD
+                                </label>
+                                <info-tag v-show="!JSONresult.Alive"> {{ deadInfo }}</info-tag>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -58,13 +65,20 @@
 <script>
 import nps1_categories from "../utils/resources/images/patients_points_circles_updated.png";
 import nps2_categories from "../utils/resources/images/NPS2_coords_general_cb0_update.png"
+import InfoTag from "@/components/InfoTag.vue";
 
 export default {
+    components: { InfoTag },
     data() {
         return {
             briefVisible: false,
             detailedVisible: false,
-            JSONresult: ""
+            JSONresult: "",
+            phenotypesdescribed: "Phenotypes represent the timed evolution of disease in range of 1-25. The closer to phenotype 25 the more developed disease",
+            probdeathdescribed: "Out of all patiens from given phenotype group, this percentage of patients died at the end og their disease",
+            patientgreyarea: " If the location of patient is the grey area then their evolution of disease can still be greatly influenced",
+            aliveInfo: "This patient belongs to the phenotype group that will survive",
+            deadInfo: "This patient belongs to the phenotype group that will die"
         };
     },
     methods: {
@@ -113,10 +127,27 @@ export default {
                 const canvasY = posY + (pointY * imageHeight * scale);
 
                 // Draw the point on the canvas
+                // context.beginPath();
+                // context.arc(canvasX, canvasY, 10, 0, 2 * Math.PI, false);
+                // context.fillStyle = "black";
+                // context.fill();
+
+                var circle1 = { radius: 5, color: "red", width: 10 }
+                var circle2 = { radius: 11, color: "black", width: 6 }
+
                 context.beginPath();
-                context.arc(canvasX, canvasY, 10, 0, 2 * Math.PI, false);
-                context.fillStyle = "black";
-                context.fill();
+                context.arc(canvasX, canvasY, circle1.radius, 0, 2 * Math.PI, false);
+                context.closePath();
+                context.lineWidth = circle1.width;
+                context.strokeStyle = circle1.color;
+                context.stroke();
+
+                context.beginPath();
+                context.arc(canvasX, canvasY, circle2.radius, 0, 2 * Math.PI, false);
+                context.closePath();
+                context.lineWidth = circle2.width;
+                context.strokeStyle = circle2.color;
+                context.stroke();
             }
         },
 
@@ -132,19 +163,20 @@ export default {
 
 <style scoped>
 .mainscreen {
+    height: 100%;
     padding: 0.3125em 5vw 0.3125em 5vw;
-    background-color: #f92d55;
+    background-image: linear-gradient(0.35turn, gray, lightgreen);
     display: inline-block;
-     border: 5px solid black;
+    border: 5px solid black;
 }
 
 .summary {
     /* overflow: hidden; */
     /* Clear float */
-    height: 85vh;
+    /* height: 85vh; */
+    height: 33em;
     padding: 1.25em 1.25em 1.25em 1.25em;
-    background-color: lightgreen;
-    border: 5px solid black;
+    background-color: rgba(0, 0, 0, .35);
     box-sizing: border-box;
 }
 
@@ -190,7 +222,7 @@ export default {
     border: 5px solid black;
 }
 
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other on smaller screens (600px wide or less) */
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other on smaller screens (600px wide or less) */
 @media screen and (max-width: 600px) {
     .result {
         width: 100%;
