@@ -266,5 +266,8 @@ canvas {
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
+  background-color: rgba(0, 0, 0, 0.35);
+  padding: 20px;
+  margin: auto;
 }
 </style>
