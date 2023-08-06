@@ -23,10 +23,10 @@ export default {
 
 <style scoped>
 .tag {
-  position: absolute;
+  /* position: absolute; */
   /* z-index: 100; */
   padding: 5px;
-  display: flex;
+  display: inline-flex;
 }
 
 .tag-icon {
@@ -34,7 +34,8 @@ export default {
 }
 
 .tag-text {
-  position: relative;
+  position: absolute;
+  margin: 15px;
   /* width: 200px; */
   background: whitesmoke;
   /* border: dashed; */
@@ -44,6 +45,8 @@ export default {
   color: black;
   padding: 40px;
   min-width: 262px;
+  max-width: 300px;
   text-align: justify;
+  z-index: 999;
 }
 </style>
