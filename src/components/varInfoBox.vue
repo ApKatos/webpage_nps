@@ -48,8 +48,6 @@ export default {
           return "#2AA63D";
         } else {
           // outside the rande
-          // return "#EEE279";
-          // return "#EEE279"
           return "#D3A350"
         }
       };

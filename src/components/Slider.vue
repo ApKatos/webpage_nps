@@ -90,12 +90,12 @@ export default {
     // },
     colorWarn: {
       get() {
-        return "#FF8000"
+        return "#D3A350"
       }
     },
     colorFine: {
       get() {
-        return "#a9a9a9"
+        return "#2AA63D"
       }
     }
 
