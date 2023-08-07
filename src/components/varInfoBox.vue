@@ -39,11 +39,18 @@ export default {
     evaluatedColor() {
       return function (varval, high, low) {
         if (varval == null) {
-          return "red";
+          // undefined
+          // return "#779A75";
+          // return "#A1AFA0"
+          return "#3E4A3D"
         } else if (varval < high && varval > low) {
-          return "green";
+          // good range
+          return "#2AA63D";
         } else {
-          return "#FF8000";
+          // outside the rande
+          // return "#EEE279";
+          // return "#EEE279"
+          return "#D3A350"
         }
       };
     },
@@ -64,7 +71,13 @@ export default {
 }
 
 .grid-item {
-  background-color: #ff4500;
+  /* background-color: #ff4500; */
+  color: white;
+  text-shadow: - 10px 10px 10 black,
+    10px 10px 10 black,
+    10px -10px 10 black,
+    -10px -10px 10 black;
+  ;
   border: 0.1em solid rgba(0, 0, 0);
   padding: 0.2em;
 }
