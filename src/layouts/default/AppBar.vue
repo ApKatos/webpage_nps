@@ -1,16 +1,13 @@
 <template>
 	<div>
-		<v-app-bar :elevation="5" border=true color="brown-lighten-4" density="compact">
+		<v-app-bar :elevation="5" border=true color="brown-lighten-5" density="compact">
 			<!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-			<svg-icon type="mdi" :path="path"></svg-icon>
+			<svg-icon @click="$router.push({ name: 'Home' });" type="mdi" :path="path" style="margin-left: 1em;cursor: pointer;"></svg-icon>
 			<v-toolbar-title @mouseover="toolbarTitle = 'Network Phenotyping Strategy'" @mouseleave="toolbarTitle = 'NPS'"
-				style="cursor: pointer;" @click="$router.push({ name: 'Home' });">{{
+				style="cursor: pointer; font-weight: bold;" @click="$router.push({ name: 'Home' });">{{
 					toolbarTitle }}</v-toolbar-title>
 			<v-spacer></v-spacer>
-			<v-label clickable @click="callMainPage" text="NEW PATIENT"></v-label>
-			<!-- //TODO treba vyriesit ze nieco ako reset toho mainu ked som na maine   -->
-			<!-- <v-btn variant="text" icon="mdi-cog" @click.stop="drawer = !drawer"></v-btn> -->
-			<!-- <v-btn variant="text" icon="mdi-dots-vertical"></v-btn> -->
+			<v-btn v-if="$route.name != 'Home'" @click="callMainPage()" elevation=5 color="black">NEW PATIENT</v-btn>
 		</v-app-bar>
 
 		<!-- <v-navigation-drawer v-model="drawer" location="top" temporary>
