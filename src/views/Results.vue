@@ -7,8 +7,10 @@
 
             <div style="padding-right: 5vw">
                 <div>
-                    <!-- add a help tag or something to describe a picture -->
+
                     <canvas ref="nps1_picture" class="frame"></canvas>
+                    <!-- TODO: position tag next to image -->
+                    <info-tag style="position: absolute; ">{{ nps1info }}</info-tag>
                 </div>
                 <div class="container">
                     <div class="text">
@@ -27,8 +29,12 @@
             </div>
 
             <div style="padding-left: 5vw">
-                <canvas ref="nps2_picture" class="frame"></canvas>
-
+                <div>
+                    <canvas ref="nps2_picture" class="frame"></canvas>
+                    <!-- TODO: position tag next to image -->
+                    <info-tag style="position: absolute; "> {{ nps2info }}
+                    </info-tag>
+                </div>
                 <div class="container">
                     <div class="text">
                         <div class="column grid-item" style="margin-right: 1.5em">
@@ -52,7 +58,6 @@
                     </div>
                 </div>
             </div>
-            <info-tag> {{ patientgreyarea }} </info-tag>
         </div>
     </div>
 </template>
@@ -148,7 +153,7 @@ export default {
         probdeathdescribed() {
             return "Out of all patiens from given phenotype group, this percentage of patients died at the end og their disease"
         },
-        patientgreyarea() {
+        nps2info() {
             return "If the location of patient is the grey area then their evolution of disease can still be greatly influenced"
         },
         aliveInfo() {
@@ -156,6 +161,9 @@ export default {
         },
         deadInfo() {
             return "This patient belongs to the phenotype group that will die"
+        },
+        nps1info() {
+            return "This image informs about the progress of disease. Phenotype with given color informs about the severity of the disease. The closer the patient to 25, the more advanced stage of the disease. Numbers close to 1 indicate the earlier stages and beginning of the disease."
         }
     },
     mounted() {
@@ -210,7 +218,8 @@ export default {
     justify-content: center;
     align-items: center;
     min-height: auto;
-    margin: 0.5em 0.5em 0.5em 1em;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 .summary {
@@ -228,13 +237,6 @@ export default {
 
 .frame {
     border: 5px solid black;
-}
-
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other on smaller screens (600px wide or less) */
-@media only screen and (max-width: 600px) {
-    .column {
-        width: 100%;
-    }
 }
 
 label {
@@ -262,7 +264,7 @@ canvas {
     width: 100%;
     flex-wrap: wrap;
     background-color: rgba(0, 0, 0, 0.35);
-    padding: 20px;
+    padding: 10px;
     margin: auto;
 }
 </style>
