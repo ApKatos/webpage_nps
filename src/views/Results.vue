@@ -6,11 +6,11 @@
         <div class="results-container">
 
             <div style="padding-right: 5vw">
-                <div>
+                <div style="display: grid;grid-template-columns: auto;">
 
                     <canvas ref="nps1_picture" class="frame"></canvas>
                     <!-- TODO: position tag next to image -->
-                    <info-tag style="position: absolute; ">{{ nps1info }}</info-tag>
+                    <info-tag style="position: absolute; margin-left: -40px; ">{{ nps1info }}</info-tag>
                 </div>
                 <div class="container">
                     <div class="text">
@@ -29,10 +29,10 @@
             </div>
 
             <div style="padding-left: 5vw">
-                <div>
+                <div style="display: grid;grid-template-columns: auto;">
                     <canvas ref="nps2_picture" class="frame"></canvas>
                     <!-- TODO: position tag next to image -->
-                    <info-tag style="position: absolute; "> {{ nps2info }}
+                    <info-tag style="position: absolute; margin-left: -40px; "> {{ nps2info }}
                     </info-tag>
                 </div>
                 <div class="container">
