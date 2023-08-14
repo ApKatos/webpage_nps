@@ -20,7 +20,7 @@ const routes = [
         path: "result",
         name: "Result",
         component: () => import("@/views/Results.vue"),
-        props: (route) => ({ result: route.query.result }),
+        props: (route: any) => ({ result: route.query.result }),
       },
     ],
   },
