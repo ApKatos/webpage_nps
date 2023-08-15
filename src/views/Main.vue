@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="varbox">
-      <infoTag style="position: fixed; top: 85px; left: 15vw; margin - top: -38px;">
+      <infoTag style="position: fixed; top: 55px; left: 15vw; margin - top: -38px;">
         <span v-html="variablesInfoText.outerHTML"></span>
       </infoTag>
       <var-box :variables="variables" app density="compact"></var-box>
@@ -10,7 +10,7 @@
       <div class="container" v-for="  variable   in   variables  " :key="variable.varname">
         <div class="graph" :id="'input-graph-' + variable.index">
           <!-- <p>{{ variable.value }}</p> -->
-          <infoTag>{{ variable.decription }}</infoTag>
+          <infoTag style="position: absolute; width:10px; margin-left: 30%;">{{ variable.decription }}</infoTag>
           <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
             @update:value="variable.value = $event" :value="variable.value">
           </HistogramC2>
@@ -31,10 +31,8 @@
         <v-btn @click="callModel()" :disabled="!allVarsSubmitted" :loading="pressedButton">
           SUBMIT
         </v-btn>
-        <infoTag v-if="allVarsSubmitted">
-          Check if all values in the left panel are correct and submit</infoTag>
-        <infoTag v-else>
-          Fill all variables before submitting the input parameters</infoTag>
+        <infoTag v-if="allVarsSubmitted"> Check if all values in the left panel are correct and submit</infoTag>
+        <infoTag v-else>Fill all variables before submitting the input parameters</infoTag>
       </div>
     </div>
   </div>
@@ -64,11 +62,10 @@ export default {
   methods: {
     loadData() {
       // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-      // <component v-bind:is="currentTabComponent" class="tab"></component>
       // https://stackoverflow.com/questions/54312147/storing-component-as-string-in-a-variable-and-rendering-it-by-variable-in-vue-js
       Object.entries(jsonData).forEach(([_, value]) => {
-        value["value"] = null;
-        // value["value"] = 1; // TODO back to null
+        // value["value"] = null;
+        value["value"] = 1; // TODO back to null
         this.variables.push(value);
       });
     },
@@ -154,6 +151,7 @@ export default {
 
 .graph {
   opacity: 0.88;
+  padding: 15px;
   border: 3px solid green;
   background-color: white;
   transition: opacity 0s ease, width 0s ease-in-out box-shadow 0.3s linear,
@@ -163,7 +161,7 @@ export default {
 .graph:hover {
   /* border: 1px solid black; */
   opacity: 1;
-  width: 45vw;
+  /* width: 45vw; */
   /* text-shadow: 0 0 0.375rem black; */
   box-shadow: 0 0 5rem hsl(300, 40%, 5%);
 }
@@ -171,10 +169,6 @@ export default {
 .endbutton {
   display: flex;
   justify-content: center;
-}
-
-.endbutton:hover {
-  background-color: darkgreen;
 }
 
 

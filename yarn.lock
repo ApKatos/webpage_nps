@@ -213,6 +213,10 @@
   resolved "https://registry.yarnpkg.com/@jamescoyle/vue-icon/-/vue-icon-0.1.2.tgz#b9e254187de6716b81bf9e0e8400ec012231bd05"
   integrity sha512-KFrImXx5TKIi6iQXlnyLEBl4rNosNKbTeRnr70ucTdUaciVmd9qK9d/pZAaKt1Ob/8xNnX2GMp8LisyHdKtEgw==
 
+"@jamescoyle/vue-icon@jamescoyle/vue-icon":
+  version "0.1.2"
+  resolved "https://codeload.github.com/jamescoyle/vue-icon/tar.gz/d3f792a4517077124e2902e74d8b51db53dbfd9c"
+
 "@jridgewell/gen-mapping@^0.3.0":
   version "0.3.3"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz"
