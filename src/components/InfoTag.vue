@@ -1,8 +1,8 @@
-<template>
+<!-- <template>
     <div class="tag" @mouseover="hover = true" @mouseleave="hover = false">
         <v-icon class="tag-icon" color="black" icon="mdi-information" size="large">
         </v-icon>
-        <div class="tag-text" v-if="hover" :class="tagTextClasses">
+        <div class="tag-text" v-show="hover" :class="positionClass">
             <slot></slot>
         </div>
     </div>
@@ -15,68 +15,68 @@ export default {
             hover: false,
             displayOnTop: false,
             displayOnLeft: false,
+            positionClass: "",
         };
     },
     computed: {
-        tagTextClasses() {
-            return {
-                "tag-text-top": this.displayOnTop,
-                "tag-text-left": this.displayOnLeft && !this.displayOnTop,
-                "tag-text-right": !this.displayOnLeft && !this.displayOnTop,
-            };
-        },
+
     },
     methods: {
         updateTagPosition() {
 
             const tagText = this.$el.querySelector(".tag-text");
+            // const tagText = this.$refs.tagText
             const tagIcon = this.$el.querySelector(".tag-icon");
+            // const tagIcon = this.$refs.tagIcon
+
             if (tagText && tagIcon) {
                 const iconRect = tagIcon.getBoundingClientRect();
                 const textRect = tagText.getBoundingClientRect();
 
-                console.log("text rect: ", textRect)
-                this.displayOnTop = iconRect.bottom > (window.innerHeight - (textRect.bottom - textRect.top));
+                this.displayOnTop = (iconRect.top - window.innerHeight + 250) > window.innerHeight;
                 this.displayOnLeft = iconRect.right > (window.innerWidth - (textRect.right - textRect.left));
 
-                console.log("top: ", this.displayOnTop, " left: ", this.displayOnLeft)
-                let newX, newY;
+                // console.log(this.displayOnTop);
+                console.log(window.innerHeight)
+                console.log(textRect.innerHeight)
+                console.log(iconRect.top)
 
-                if (this.displayOnLeft) {
-                    newX = iconRect.left - textRect.width - 10;
-                    newY = iconRect.top;
-                } else if (this.displayOnTop) {
-                    newX = iconRect.left;  // Adjusted this line to use iconRect.left
-                    newY = iconRect.top - textRect.height - 10;  // Adjusted this line to use iconRect.top minus textRect.height
-                } else {
-                    newX = iconRect.left;
-                    newY = iconRect.bottom + 10;
-                }
-
-                tagText.style.left = `${Math.max(0, Math.min(newX, window.innerWidth - textRect.width))}px`;
-                tagText.style.top = `${Math.max(0, newY)}px`;
+                if (this.displayOnTop)
+                    this.positionClass = "tag-text-top";
+                else if (this.displayOnLeft && !this.displayOnTop)
+                    this.positionClass = "tag-text-left";
+                else if (!this.displayOnLeft && !this.displayOnTop)
+                    this.positionClass = "tag-text-right";
             }
         },
         calculateInitialPosition() {
-            const tagIcon = this.$el.querySelector(".tag-icon");
+            const tagIcon = this.$refs.tagIcon;
             if (tagIcon) {
                 this.$nextTick(() => {
                     const iconRect = tagIcon.getBoundingClientRect();
-                    const tagText = this.$el.querySelector(".tag-text");
+                    const tagText = this.$refs.tagText
                     if (tagText) {
                         const textRect = tagText.getBoundingClientRect();
-                        this.displayOnTop = iconRect.bottom > (window.innerHeight - (textRect.bottom - textRect.top));
+                        this.displayOnTop = (window.innerHeight + 250) > window.innerHeight;
                         this.displayOnLeft = iconRect.right > (window.innerWidth - (textRect.right - textRect.left));
                     }
                 });
+                if (this.displayOnTop)
+                    this.positionClass = "tag-text-top";
+                else if (this.displayOnLeft && !this.displayOnTop)
+                    this.positionClass = "tag-text-left";
+                else if (!this.displayOnLeft && !this.displayOnTop)
+                    this.positionClass = "tag-text-right";
             }
         }
     },
     watch: {
         hover: "updateTagPosition",
     },
+    beforeMount() { this.calculateInitialPosition(); },
     mounted() {
-        this.updateTagPosition(); // Call this method once to set initial position
+
+        // this.updateTagPosition(); // Call this method once to set initial position
         window.addEventListener("resize", this.updateTagPosition);
     },
     beforeDestroy() {
@@ -111,18 +111,47 @@ export default {
     min-width: 262px;
     max-width: 300px;
     text-align: center;
+    max-height: 100px;
 }
 
 .tag-text-top {
-    bottom: calc(100% + 10px);
+    bottom: calc(100% + 1px);
 }
 
 .tag-text-left {
-    right: calc(100% + 10px);
+    right: calc(100% + 1px);
     left: auto;
 }
 
 .tag-text-right {
-    left: calc(100% + 10px);
+    left: calc(100% + 1px);
+}
+</style> -->
+
+<template>
+    <div>
+        <v-tooltip>
+            <template v-slot:activator="{ props }">
+                <!-- <v-btn v-bind=" props"></v-btn> -->
+                <v-icon v-bind="props" color="black" class="tag" icon="mdi-information" size="large">
+                </v-icon>
+            </template>
+            <slot></slot>
+        </v-tooltip>
+    </div>
+</template>
+
+
+<script>
+export default {
+
+}
+</script>
+<style scoped>
+.tag {
+    padding: 5px;
+    display: inline-flex;
+    position: relative;
+    cursor: pointer;
 }
 </style>
