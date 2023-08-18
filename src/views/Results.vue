@@ -4,15 +4,15 @@
             <h1>RESULTS</h1>
         </div>
         <div class="results-container">
-
             <div style="padding-right: 5vw">
-                <div style="display: grid;grid-template-columns: auto;">
-
+                <div style="display: grid; grid-template-columns: auto">
                     <canvas ref="nps1_picture" class="frame"></canvas>
-                    <!-- TODO: position tag next to image -->
-                    <info-tag style="position: absolute; margin-left: -40px; ">{{ nps1info }}</info-tag>
+                    <info-tag style="position: absolute; margin-left: -40px">{{
+                        nps1info
+                    }}</info-tag>
+
                 </div>
-                <div class="container">
+                <!-- <div class="container">
                     <div class="text">
                         <div class="grid-item" style="display: grid;  grid-template-columns: 3fr 1fr 1fr;">
                             <p>Patient's phenotype group:</p>
@@ -25,17 +25,63 @@
                             <info-tag> {{ probdeathdescribed }}</info-tag>
                         </div>
                     </div>
+                </div> -->
+
+                <div class="container-left">
+                    <div class="phenotype-text">
+                        <p>Patient's phenotype group:</p>
+                    </div>
+                    <div class="phenotype-number">
+                        <label> {{ JSONresult.TimePhenotype }} </label>
+                    </div>
+                    <div class="phenotype-info">
+                        <info-tag> {{ phenotypesdescribed }} </info-tag>
+                    </div>
+
+                    <div class="probability-text">
+                        <p>Death probability among the group:</p>
+                    </div>
+                    <div class="probability-number">
+                        <label>{{ Math.round(JSONresult.ProbOfDeath) }}% </label>
+                    </div>
+                    <div class="probability-info">
+                        <info-tag> {{ probdeathdescribed }}</info-tag>
+                    </div>
                 </div>
             </div>
 
             <div style="padding-left: 5vw">
-                <div style="display: grid;grid-template-columns: auto;">
+                <div style="display: grid; grid-template-columns: auto">
                     <canvas ref="nps2_picture" class="frame"></canvas>
                     <!-- TODO: position tag next to image -->
-                    <info-tag style="position: absolute; margin-left: -40px; "> {{ nps2info }}
+                    <info-tag style="position: absolute; margin-left: -40px">
+                        {{ nps2info }}
                     </info-tag>
                 </div>
-                <div class="container">
+                <div class="container-right">
+                    <div class="alive">
+                        <label :style="{ color: JSONresult.Alive ? 'greenyellow' : 'gray' }" style="margin-left: 55px"
+                            :class="{
+                                'highlighted-label': JSONresult.Alive,
+                            }">
+                            ALIVE
+                        </label>
+                        <info-tag :style="{ visibility: JSONresult.Alive ? 'visible' : 'hidden' }"
+                            style="margin-left: 5px; margin-top: 8px">
+                            {{ aliveInfo }}</info-tag>
+                    </div>
+                    <div class="dead">
+                        <label :style="{ color: JSONresult.Alive ? ' grey' : 'tomato' }" style="margin-left: 55px" :class="{
+                            'highlighted-label': !JSONresult.Alive,
+                        }">
+                            DEAD
+                        </label>
+                        <info-tag :style="{ visibility: JSONresult.Alive ? 'hidden' : 'hidden' }"
+                            style="margin-left: 5px; margin-top: 8px">
+                            {{ deadInfo }}</info-tag>
+                    </div>
+                </div>
+                <!-- <div class="container-left">
                     <div class="text">
                         <div class="column grid-item" style="margin-right: 1.5em">
                             <info-tag v-show="JSONresult.Alive"> {{ aliveInfo }}</info-tag>
@@ -54,9 +100,8 @@
                             </label>
                             <info-tag v-show="!JSONresult.Alive"> {{ deadInfo }}</info-tag>
                         </div>
-
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -121,11 +166,6 @@ export default {
                 const canvasX = posX + pointX * imageWidth * scale;
                 const canvasY = posY + pointY * imageHeight * scale;
 
-                // Draw the point on the canvas
-                // context.beginPath();
-                // context.arc(canvasX, canvasY, 10, 0, 2 * Math.PI, false);
-                // context.fillStyle = "black";
-                // context.fill();
 
                 var circle1 = { radius: 5, color: "red", width: 10 };
                 var circle2 = { radius: 11, color: "black", width: 6 };
@@ -148,23 +188,23 @@ export default {
     },
     computed: {
         phenotypesdescribed() {
-            return "Phenotypes represent the timed evolution of disease in range of 1-25. The closer to phenotype 25 the more developed disease"
+            return "Phenotypes represent the timed evolution of disease in range of 1-25. The closer to phenotype 25 the more developed disease";
         },
         probdeathdescribed() {
-            return "Out of all patiens from given phenotype group, this percentage of patients died at the end og their disease"
+            return "Out of all patiens from given phenotype group, this percentage of patients died at the end og their disease";
         },
         nps2info() {
-            return "If the location of patient is the grey area then their evolution of disease can still be greatly influenced"
+            return "If the location of patient is the grey area then their evolution of disease can still be greatly influenced";
         },
         aliveInfo() {
-            return "This patient belongs to the phenotype group that will survive"
+            return "This patient belongs to the phenotype group that will survive";
         },
         deadInfo() {
-            return "This patient belongs to the phenotype group that will die"
+            return "This patient belongs to the phenotype group that will die";
         },
         nps1info() {
-            return "This image informs about the progress of disease. Phenotype with given color informs about the severity of the disease. The closer the patient to 25, the more advanced stage of the disease. Numbers close to 1 indicate the earlier stages and beginning of the disease."
-        }
+            return "This image informs about the progress of disease. Phenotype of given color informs about the severity of the disease. <br />The closer the patient to 25, the more advanced stage of the disease. <br />Numbers close to 1 indicate the earlier stages and beginning of the disease.";
+        },
     },
     mounted() {
         this.JSONresult = JSON.parse(this.$route.query.result);
@@ -193,14 +233,83 @@ export default {
     border: 5px solid black;
 }
 
-.container {
-    display: flex;
+
+.container-left {
+    display: grid;
+    grid-template-columns: 17.5vw 3.9vw 2.6vw;
+    grid-template-rows: 80px 80px;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "phenotype-text phenotype-number phenotype-info"
+        "probability-text probability-number probability-info";
     background-color: lightgray;
     border: 5px solid black;
-    width: 26vw;
-    justify-content: center;
-    align-items: center;
+}
 
+.container-left>div>p {
+    font-size: 1.35em;
+}
+
+.container-left>div {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.phenotype-text {
+    grid-area: phenotype-text;
+    margin-left: 10px !important;
+    justify-content: left !important;
+}
+
+.probability-text {
+    grid-area: probability-text;
+    margin-left: 10px !important;
+    justify-content: left !important;
+}
+
+.phenotype-number {
+    grid-area: phenotype-number;
+}
+
+.probability-number {
+    grid-area: probability-number;
+}
+
+.phenotype-info {
+    grid-area: phenotype-info;
+}
+
+.probability-info {
+    grid-area: probability-info;
+}
+
+.container-right {
+    display: grid;
+    grid-template-columns: 24vw;
+    grid-template-rows: 80px 80px;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "alive"
+        "dead";
+    background-color: lightgray;
+    border: 5px solid black;
+}
+
+.container-right>div {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.alive {
+    grid-area: alive;
+}
+
+.dead {
+    grid-area: dead;
 }
 
 .text {
@@ -240,7 +349,7 @@ export default {
 }
 
 label {
-    font-size: 2em;
+    font-size: 1.75em;
     font-weight: bold;
     opacity: 0.5;
 }
@@ -266,5 +375,15 @@ canvas {
     background-color: rgba(0, 0, 0, 0.35);
     padding: 10px;
     margin: auto;
+}
+
+@media only screen and (max-width: 1200px) {
+    label {
+        font-size: 1.25em;
+    }
+
+    .container-left>div>p {
+        font-size: 1em;
+    }
 }
 </style>

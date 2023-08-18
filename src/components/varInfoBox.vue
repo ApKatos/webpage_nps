@@ -62,7 +62,7 @@ export default {
   display: grid;
   grid-template-columns: 1;
   grid-template-rows: repeat(17, auto);
-  height: 93.5vh;
+  height: calc(100vh - 48px);
   width: 15vw;
   /* background-color: #838383; */
   /* padding: 3px; */

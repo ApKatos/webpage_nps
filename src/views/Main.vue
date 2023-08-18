@@ -10,7 +10,8 @@
       <div class="container" v-for="  variable   in   variables  " :key="variable.varname">
         <div class="graph" :id="'input-graph-' + variable.index">
           <!-- <p>{{ variable.value }}</p> -->
-          <infoTag style="position: absolute; width:10px; margin-left: 30%;">{{ variable.decription }}</infoTag>
+          <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
+          </infoTag>
           <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
             @update:value="variable.value = $event" :value="variable.value">
           </HistogramC2>
@@ -31,8 +32,10 @@
         <v-btn @click="callModel()" :disabled="!allVarsSubmitted" :loading="pressedButton">
           SUBMIT
         </v-btn>
-        <infoTag v-if="allVarsSubmitted"> Check if all values in the left panel are correct and submit</infoTag>
-        <infoTag v-else>Fill all variables before submitting the input parameters</infoTag>
+        <infoTag v-if="allVarsSubmitted" style=" margin-left: 5px; margin-top: 5px;"> Check if all values in the left
+          panel are correct and submit</infoTag>
+        <infoTag v-else style="margin-left: 5px; margin-top: 5px;">Fill all variables before submitting the input
+          parameters</infoTag>
       </div>
     </div>
   </div>
@@ -154,19 +157,17 @@ export default {
   padding: 15px;
   border: 3px solid green;
   background-color: white;
-  transition: opacity 0s ease, width 0s ease-in-out box-shadow 0.3s linear,
-    background-color 0s ease;
+  transition: box-shadow 0.2s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .graph:hover {
-  /* border: 1px solid black; */
   opacity: 1;
-  /* width: 45vw; */
-  /* text-shadow: 0 0 0.375rem black; */
-  box-shadow: 0 0 5rem hsl(300, 40%, 5%);
+  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.45);
 }
 
 .endbutton {
+  padding-bottom: 5px;
   display: flex;
   justify-content: center;
 }
