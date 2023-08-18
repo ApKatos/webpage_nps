@@ -67,8 +67,8 @@ export default {
       // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
       // https://stackoverflow.com/questions/54312147/storing-component-as-string-in-a-variable-and-rendering-it-by-variable-in-vue-js
       Object.entries(jsonData).forEach(([_, value]) => {
-        // value["value"] = null;
-        value["value"] = 1; // TODO back to null
+        value["value"] = -1;
+        // value["value"] = 1; // TODO back to null
         this.variables.push(value);
       });
     },
@@ -106,7 +106,7 @@ export default {
   computed: {
     allVarsSubmitted() {
       for (let variable of this.variables) {
-        if (variable.value == null) {
+        if (variable.value == -1) {
           return false;
         }
       }
@@ -115,7 +115,6 @@ export default {
     variablesInfoText() {
       var label = document.createElement('p');
       label.innerHTML = `Color of the parameter informs you about the prevalence of chosen value in population this model was trained on. <ul type="square" style="margin-left:15px"><li style="color: #3E4A3D; font-weight: bold;">Unfilled value</li><li style="color: #D3A350; font-weight: bold;">Very scarcely observed value</li><li style="color: #2AA63D; font-weight: bold;">Average value </li></ul>Pressing the variable name will navigate you to input value for the field.`;
-      console.log(label)
       return label
     }
   },
@@ -126,7 +125,6 @@ export default {
 .varbox {
   position: fixed;
   z-index: 99;
-
 }
 
 .bg {

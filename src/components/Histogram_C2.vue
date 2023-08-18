@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       // TODO - ono to nebude cislo ked nacitam z JSON a nastavim na null, problem, nastavit na -1????
+      // TODO - na zaciatku problem kliknut na NO ale na YES to berie
       valueData: Number(this.value),
       labelDataVals: this.dataInp,
     };
@@ -61,7 +62,9 @@ export default {
     handleBarClick(index, labelData) {
       // Handle the bar click event here
       if (labelData.length == 2) {
+        console.log("it is categorical")
         let val = labelData[index];
+        console.log(val, " value")
         if (val == "NO" || val == "MALE") {
           this.valueData = 0;
           console.log(this.valueData);
@@ -158,7 +161,7 @@ export default {
   watch: {
     valueData: {
       handler(val, oldVal) {
-        // console.log("   Hodnota valueDataje zmenena z " + oldVal + " na hodnotu " + val)
+        console.log("   Hodnota valueDataje zmenena z " + oldVal + " na hodnotu " + val)
         this.$emit("update:value", val);
       },
     },

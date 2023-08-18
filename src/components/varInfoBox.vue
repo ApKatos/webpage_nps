@@ -38,7 +38,7 @@ export default {
   computed: {
     evaluatedColor() {
       return function (varval, high, low) {
-        if (varval == null) {
+        if (varval == -1) {
           // undefined
           // return "#779A75";
           // return "#A1AFA0"
