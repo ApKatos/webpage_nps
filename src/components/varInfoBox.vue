@@ -12,7 +12,7 @@
           {{ variable.varname }}
         </div>
         <div class="column" style="text-align: right; padding-right: 1em; font-size: 1vw;">
-          {{ variable.value }}
+          {{ getValueOfVariable(variable) }}
         </div>
       </div>
     </div>
@@ -34,6 +34,21 @@ export default {
         graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
       }
     },
+    getValueOfVariable(variable) {
+      let value;
+      const undefinedValue = "-1"
+
+      if (variable.varname == "GENDER") {
+        if (variable.value == 0) value = "MALE"
+        else if (variable.value == 1) value = "FEMALE"
+        else value = undefinedValue
+      } else if (variable.categ == 1) {
+        if (variable.value == 1) value = "YES"
+        else if (variable.value == 0) value = "NO"
+        else value = undefinedValue
+      } else value = variable.value
+      return value
+    }
   },
   computed: {
     evaluatedColor() {
