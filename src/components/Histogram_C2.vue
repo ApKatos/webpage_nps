@@ -50,6 +50,10 @@ export default {
     value: {
       default: "",
     },
+    unit: {
+      default: "",
+      require: false,
+    }
   },
   methods: {
     handleChartClick(event, elements, labelsInp) {
@@ -109,7 +113,6 @@ export default {
             minBarLength: 5,
             borderColor: "rgba(0, 0, 0)",
             borderWidth: 1,
-            // inflateAmount: 1,
             hoverBackgroundColor: "#013519",
             hoverBorderColor: "rgba(0, 0, 0)",
             hoverBorderWidth: 5,
@@ -133,15 +136,11 @@ export default {
               },
             },
           },
-          // y: {
-          //   display: true,
-          //   type: 'logarithmic',
-          // }
         },
         plugins: {
           title: {
             display: true,
-            text: this.dataName,
+            text: this.dataName + "  " + this.unit,
             padding: {
               top: 10,
               bottom: 10,
