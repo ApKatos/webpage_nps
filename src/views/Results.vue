@@ -188,22 +188,22 @@ export default {
     },
     computed: {
         phenotypesdescribed() {
-            return "Phenotypes represent the timed evolution of disease in range of 1-25. The closer to phenotype 25 the more developed disease";
+            return "Phenotypes represent the timed evolution of disease in range of 1-25. The closer to phenotype 25 the more developed the disease";
         },
         probdeathdescribed() {
-            return "Out of all patiens from given phenotype group, this percentage of patients died at the end og their disease";
+            return "Out of all patiens from given phenotype group, displayed percentage of patients died at the end of their disease";
         },
         nps2info() {
-            return "If the location of patient is the grey area then their evolution of disease can still be greatly influenced";
+            return "If the patient's location is in the grey area then their disease progress can still be greatly influenced";
         },
         aliveInfo() {
-            return "This patient belongs to the phenotype group that will survive";
+            return "This patient belongs to the surviving propotion of the phenotype";
         },
         deadInfo() {
-            return "This patient belongs to the phenotype group that will die";
+            return "This patient belongs to the dying proportion of the phenotype group";
         },
         nps1info() {
-            return "This image informs about the progress of disease. Phenotype of given color informs about the severity of the disease. <br />The closer the patient to 25, the more advanced stage of the disease. <br />Numbers close to 1 indicate the earlier stages and beginning of the disease.";
+            return "This image informs about the progress of disease. Development of disease is described by 25 phenotypes divided into 3 colors according to the severity of the disease. The closer the patient to 25, the more advanced stage of the disease they have. Numbers close to 1 indicate earlier stages and beginnings of the disease.";
         },
     },
     mounted() {
