@@ -9,7 +9,8 @@
             </div>
 
             <p class="text-body-2 mb-4">
-                Please keep in mind that this is not to be played with by setting random values and adjusting the evaluation
+                Please keep in mind that this model is not to be played with by setting random values and adjusting the
+                evaluation
                 for patient.
             </p>
 
