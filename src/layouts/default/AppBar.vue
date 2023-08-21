@@ -2,8 +2,12 @@
 	<div>
 		<v-app-bar :elevation="5" border=true color="brown-lighten-5" density="compact">
 			<!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+			<v-app-bar-nav-icon @click="$router.push({ name: 'Home' });">
+				<v-icon icon="mdi-home"></v-icon>
+			</v-app-bar-nav-icon>
 			<!-- <svg-icon @click="$router.push({ name: 'Home' });" type="mdi" :path="path" -->
 			<!-- style="margin-left: 1em;cursor: pointer;"></svg-icon> -->
+			<!-- <img src="../../assets/health-svgrepo-com.svg" alt="Navigation Icon" /> -->
 			<v-toolbar-title @mouseover="toolbarTitle = 'Network Phenotyping Strategy'" @mouseleave="toolbarTitle = 'NPS'"
 				style="cursor: pointer; font-weight: bold;" @click="$router.push({ name: 'Home' });">{{
 					toolbarTitle }}</v-toolbar-title>
