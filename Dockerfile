@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 # RUN npm install -g yarn
 
 # Copy necessary files for the web
-COPY ./package.json ./yarn.lock vite.config.ts ./webpack.config.ts ./tsconfig.node.json ./tsconfig.json .
+COPY ./package.json ./index.html ./yarn.lock vite.config.ts ./webpack.config.ts ./tsconfig.node.json ./tsconfig.json .
 
 # Install the dependencies
 RUN yarn install
