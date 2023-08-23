@@ -33,9 +33,8 @@ jobs:
         run: yarn run build # Adjust the build command as needed
 
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: github-pages
           path: ./dist/ # Adjust this to the path of your build output
 
   deploy:
