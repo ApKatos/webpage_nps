@@ -139,9 +139,7 @@ export default {
             image.src = pictureName;
 
             let pointX = xCoord + xCorrection; // X-coordinate of the point on the picture
-            console.log(pointX);
             let pointY = 1 - yCoord + yCorrection; // Y-coordinate of the point on the picture
-            console.log(pointY);
 
             image.onload = function () {
                 // Calculate the scaling factor for mapping the picture coordinates to the canvas
@@ -229,7 +227,6 @@ export default {
     height: 100%;
     padding: 0.3125em 5vw 0.3125em 5vw;
     background-image: linear-gradient(0.35turn, gray, lightgreen);
-    /* display: inline-block; */
     border: 5px solid black;
 }
 
@@ -341,7 +338,6 @@ export default {
 .column {
     float: left;
     width: 50%;
-    /* border: 5px solid green */
 }
 
 .frame {

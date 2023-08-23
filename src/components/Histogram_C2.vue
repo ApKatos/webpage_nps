@@ -28,8 +28,6 @@ export default {
   components: { Bar },
   data() {
     return {
-      // TODO - ono to nebude cislo ked nacitam z JSON a nastavim na null, problem, nastavit na -1????
-      // TODO - na zaciatku problem kliknut na NO ale na YES to berie
       valueData: Number(this.value),
       labelDataVals: this.dataInp,
     };
@@ -66,36 +64,24 @@ export default {
     handleBarClick(index, labelData) {
       // Handle the bar click event here
       if (labelData.length == 2) {
-        console.log("it is categorical")
         let val = labelData[index];
-        console.log(val, " value")
         if (val == "NO" || val == "MALE") {
           this.valueData = 0;
-          console.log(this.valueData);
         } else if (val == "YES" || val == "FEMALE") {
           this.valueData = 1;
-          console.log(this.valueData);
         }
       } else {
         let upval = labelData[index].split("=")[1];
         let downval = labelData[index].split("<")[0];
-        console.log(downval);
-        console.log(upval);
-        console.log(typeof this.valueData)
         if (
           this.valueData == "" ||
           this.valueData >= upval ||
           this.valueData <= downval
         ) {
-          console.log("Prepisujem")
           this.valueData = Number(
             (Number.parseFloat(upval) + Number.parseFloat(downval)) / 2
           ).toFixed(1);
         }
-
-        // console.log("this is this.valuedata po prepisani: " + this.valueData)
-        // console.log("Clicked bar index:", index);
-        console.log("value set on ", this.valueData);
       }
     },
   },
@@ -129,7 +115,6 @@ export default {
             display: true,
             ticks: {
               callback: function (value, index, ticks) {
-                // return this.getLabelForValue(value)
                 const label = this.getLabelForValue(value).toString();
                 const num1 = label.split("<")[0];
                 return num1;
@@ -160,13 +145,11 @@ export default {
   watch: {
     valueData: {
       handler(val, oldVal) {
-        console.log("   Hodnota valueDataje zmenena z " + oldVal + " na hodnotu " + val)
         this.$emit("update:value", val);
       },
     },
     value: {
       handler(val, oldVal) {
-        // console.log("Hodnota vstupneho propu je zmenena z " + oldVal + " na hodnotu " + val)
         this.valueData = Number(val)
       }
     }

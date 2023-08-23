@@ -26,22 +26,14 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  /* Use flexbox */
   flex-direction: column;
-  /* Stack elements vertically */
   justify-content: center;
   align-items: center;
   height: 100%;
-
   background-image: linear-gradient(0.35turn, gray, lightgreen);
 }
 
 .child {
   padding: 1em;
 }
-
-/* .container:hover {
-  background-color: linear-gradient(to right, #ff0000, #00ff00, #0000ff);
-  ;
-} */
 </style>

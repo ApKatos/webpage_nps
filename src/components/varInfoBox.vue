@@ -55,8 +55,6 @@ export default {
       return function (varval, high, low) {
         if (varval == -1) {
           // undefined
-          // return "#779A75";
-          // return "#A1AFA0"
           return "#3E4A3D"
         } else if (varval < high && varval > low) {
           // good range
@@ -79,12 +77,9 @@ export default {
   grid-template-rows: repeat(17, auto);
   height: calc(100vh - 48px);
   width: 15vw;
-  /* background-color: #838383; */
-  /* padding: 3px; */
 }
 
 .grid-item {
-  /* background-color: #ff4500; */
   color: white;
   text-shadow: - 10px 10px 10 black,
     10px 10px 10 black,

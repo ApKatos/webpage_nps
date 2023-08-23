@@ -49,9 +49,6 @@ import BinaryButtons from "@/components/BinaryButtons.vue";
 import VarBox from "../components/varInfoBox.vue";
 import infoTag from "../components/InfoTag.vue";
 import { ModelWrapper } from "../utils/Model.ts";
-// prepisat  labels z 0,1 na NO, YES
-// upravit max range pri AFP (?) na nizsie cislo
-// pridat steps 1 k premennym AGE, TUMOR_NODULES
 export default {
   components: { HistogramC2, MySlider, BinaryButtons, VarBox, infoTag },
   data() {
@@ -64,11 +61,8 @@ export default {
   },
   methods: {
     loadData() {
-      // TODO: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-      // https://stackoverflow.com/questions/54312147/storing-component-as-string-in-a-variable-and-rendering-it-by-variable-in-vue-js
       Object.entries(jsonData).forEach(([_, value]) => {
         value["value"] = -1;
-        // value["value"] = 1; // TODO back to null
         this.variables.push(value);
       });
     },
@@ -79,7 +73,6 @@ export default {
           let variable = this.variables[i];
           arr[variable.varname] = variable.value;
         }
-        console.log(arr);
         let JSONModelInput = JSON.stringify(arr);
         return JSONModelInput;
       } else {
@@ -134,15 +127,11 @@ export default {
 .container {
   display: flex;
   justify-content: center;
-  /* box-shadow: 0 0 2rem hsl(129, 62%, 20%); */
 }
 
 .container div {
-  /* border: 5px solid green; */
-  /* background-color: white; */
   margin-top: 2vh;
   margin-bottom: 2vh;
-  /* padding: 1vw 0 1vw 0; */
   width: 38svw;
   display: flex;
   flex-wrap: wrap;
@@ -169,8 +158,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-
-
 
 p {
   color: black;
