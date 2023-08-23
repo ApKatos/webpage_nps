@@ -3,17 +3,11 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this to your main branch name
+      - main # Change this to your main branch name
 
 permissions:
   id-token: write
-  pages: write      # to deploy to Pages
-
-# Deploy to the github-pages environment
-environment:
-  name: github-pages
-  url: ${{ steps.deployment.outputs.page_url }}
-
+  pages: write # to deploy to Page
 
 jobs:
   build:
@@ -26,23 +20,23 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18  # Use the appropriate Node.js version
-          cache: 'yarn'
+          node-version: 18 # Use the appropriate Node.js version
+          cache: "yarn"
 
       - name: Check yarn version
         run: yarn --version
-        
+
       - name: Install dependencies
-        run: yarn install  # Use npm install if you prefer npm
+        run: yarn install # Use npm install if you prefer npm
 
       - name: Build project
-        run: yarn run build  # Adjust the build command as needed
+        run: yarn run build # Adjust the build command as needed
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: github-pages
-          path: ./dist/  # Adjust this to the path of your build output
+          path: ./dist/ # Adjust this to the path of your build output
 
   deploy:
     needs: build
@@ -56,10 +50,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: github-pages
-          path: ./dist/  # The same path you used in the build step
+          path: ./dist/ # The same path you used in the build step
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
         with:
-          branch: gh-pages  # Or the branch you want to deploy to
-          folder: ./dist/     # The same path as your build output
+          branch: gh-pages # Or the branch you want to deploy to
+          folder: ./dist/ # The same path as your build output
