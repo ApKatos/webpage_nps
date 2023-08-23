@@ -7,7 +7,14 @@ on:
 
 permissions:
   id-token: write
-  
+  pages: write      # to deploy to Pages
+
+# Deploy to the github-pages environment
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,7 +41,7 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: build-artifact
+          name: github-pages
           path: ./dist/  # Adjust this to the path of your build output
 
   deploy:
@@ -48,7 +55,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: build-artifact
+          name: github-pages
           path: ./dist/  # The same path you used in the build step
 
       - name: Deploy to GitHub Pages
