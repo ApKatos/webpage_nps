@@ -57,6 +57,3 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
-        with:
-          branch: gh-pages # Or the branch you want to deploy to
-          folder: ./dist/ # The same path as your build output
