@@ -20,6 +20,7 @@ export default defineConfig({
       },
     }),
   ],
+  base: "/webpage_nps/",
   define: { "process.env": {} },
   resolve: {
     alias: {
