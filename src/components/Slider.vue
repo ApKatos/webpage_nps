@@ -5,15 +5,15 @@
       :min="minim" :max="maxim">
 
       <template v-slot:prepend>
-        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @click.once="decrement(1)"
-          @mousedown="startDecrement" @mouseup="stopDecrement" @mouseleave="stopDecrement" @touchstart="startDecrement"
-          @touchend="stopDecrement" @touchmove="stopDecrement" @touchcancel="stopDecrement"></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
+          @mouseup="stopDecrement" @mouseleave="stopDecrement" @touchstart="startDecrement" @touchend="stopDecrement"
+          @touchmove="stopDecrement" @touchcancel="stopDecrement"></v-btn>
       </template>
 
       <template v-slot:append>
-        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @click.once="increment(1)"
-          @mousedown="startIncrement" @mouseup="stopIncrement" @mouseleave="stopIncrement" @touchstart="startIncrement"
-          @touchend="stopIncrement" @touchup="stopIncrement" @touchcancel="stopIncrement"></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @mousedown="startIncrement"
+          @mouseup="stopIncrement" @mouseleave="stopIncrement" @touchstart="startIncrement" @touchend="stopIncrement"
+          @touchup="stopIncrement" @touchcancel="stopIncrement"></v-btn>
       </template>
 
     </v-slider>
@@ -27,8 +27,8 @@ export default {
     return {
       valueData: this.value,
       color: "#a9a9a9",
-      incrementInterval: null, // Variable to hold the interval ID
-      decrementInterval: null // Variable to hold the interval ID
+      isIncrementing: false,
+      isDecrementing: false,
     }
   },
   props: {
@@ -53,35 +53,33 @@ export default {
     }
   },
   methods: {
-    increment(times) {
-      this.valueData = Number((Number(this.valueData) + (0.1 * times))).toFixed(1);
-    },
-    decrement(times) {
-      this.valueData = Math.max(0, Number((this.valueData - (0.1 * times)).toFixed(1)));
-    },
     startIncrement() {
-      if (this.incrementInterval === null) {
-        this.incrementInterval = setInterval(() => {
-          this.increment(10); // Increment the variable value
-        }, 50);
-      }
-
+      this.isIncrementing = true;
+      this.incrementValue();
     },
     stopIncrement() {
-      clearInterval(this.incrementInterval); // Stop the increment when the button is released or the cursor leaves the button area
-      this.incrementInterval = null;
+      this.isIncrementing = false;
     },
-    startDecrement() {
-      if (this.decrementInterval === null) {
-        this.decrementInterval = setInterval(() => {
-          this.decrement(10); // Increment the variable value
-        }, 50);
+    incrementValue() {
+      if (this.isIncrementing) {
+        this.valueData++;
+        setTimeout(this.incrementValue, 200); // Adjust the interval as needed
       }
     },
-    stopDecrement() {
-      clearInterval(this.decrementInterval); // Stop the increment when the button is released or the cursor leaves the button area
-      this.decrementInterval = null;
+
+    startDecrement() {
+      this.isDecrementing = true;
+      this.decrementValue();
     },
+    stopDecrement() {
+      this.isDecrementing = false;
+    },
+    decrementValue() {
+      if (this.isDecrementing) {
+        this.valueData--;
+        setTimeout(this.decrementValue, 200); // Adjust the interval as needed
+      }
+    }
   },
   computed: {
     colorWarn: {
@@ -109,7 +107,7 @@ export default {
     },
     value: {
       handler(val, oldVal) {
-        this.valueData = val
+        this.valueData = Number(val).toFixed(1);
       }
     }
 
