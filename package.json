@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build && shx cp dist/index.html dist/404.html",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
@@ -13,6 +13,7 @@
     "@rollup/plugin-typescript": "^11.1.2",
     "chart.js": "^4.2.1",
     "oh-vue-icons": "^1.0.0-rc3",
+    "shx": "^0.3.4",
     "vue": "3.2.26",
     "vue-chartjs": "^5.2.0",
     "vue-router": "4",
