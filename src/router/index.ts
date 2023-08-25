@@ -2,7 +2,6 @@
 import {
   createRouter,
   createWebHistory,
-  createWebHashHistory,
 } from "vue-router";
 
 const routes = [
@@ -32,17 +31,8 @@ const routes = [
   { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 
-// const base = import.meta.env.BASE_URL.endsWith("/")
-//   ? import.meta.env.BASE_URL
-//   : import.meta.env.BASE_URL + "/";
-
-// routes.forEach((route) => {
-//   route.path = import.meta.env.BASE_URL + route.path;
-// });
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  // history: createWebHashHistory(),
   routes,
 });
 
