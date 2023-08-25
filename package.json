@@ -15,7 +15,7 @@
     "oh-vue-icons": "^1.0.0-rc3",
     "vue": "3.2.26",
     "vue-chartjs": "^5.2.0",
-    "vue-router": "^4.2.4",
+    "vue-router": "4",
     "vuetify": "^3.3.13",
     "webfontloader": "^1.0.0",
     "webpack": "^5.88.0"

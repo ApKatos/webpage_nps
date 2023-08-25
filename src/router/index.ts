@@ -1,5 +1,9 @@
 // Composables
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 
 const routes = [
   {
@@ -24,18 +28,21 @@ const routes = [
       },
     ],
   },
+  // default redirect to home page
+  { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 
-const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : import.meta.env.BASE_URL + "/";
+// const base = import.meta.env.BASE_URL.endsWith("/")
+//   ? import.meta.env.BASE_URL
+//   : import.meta.env.BASE_URL + "/";
 
-routes.forEach((route) => {
-  route.path = base + route.path;
-});
+// routes.forEach((route) => {
+//   route.path = import.meta.env.BASE_URL + route.path;
+// });
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHashHistory(),
   routes,
 });
 
