@@ -1,5 +1,5 @@
 <template>
-  <Bar :data="passData" :options="passOptions" v-model="valueData" />
+  <Bar ref="histChart" :data="passData" :options="passOptions" v-model="valueData" />
 </template>
 
 <script>
@@ -30,13 +30,16 @@ export default {
     return {
       valueData: Number(this.value),
       labelDataVals: this.dataInp,
+      highlightenedIndex: -1,
     };
   },
   props: {
+
     labelsInp: {
       Array,
       required: true,
     },
+
     dataInp: {
       Array,
       required: true,
@@ -54,6 +57,21 @@ export default {
     }
   },
   methods: {
+    setHighlightBarIndexByValue(value) {
+      if (this.labelsInp.length == 2) {
+        if (value == "MALE" || value == "0")
+          this.highlightenedIndex = 0
+        else if (value = "FEMALE" || value == "1")
+        this.highlightenedIndex=1
+      } else {
+        for (let i = 0; i < this.labelsInp.length; i++) {
+          const vals = this.labelsInp[i].split("<x<=")
+          if (value > vals[0] && value <= vals[1]) {
+            this.highlightenedIndex = i
+          }
+        }
+      }
+    },
     handleChartClick(event, elements, labelsInp) {
       if (elements.length > 0) {
         const clickedBarIndex = elements[0].index;
@@ -86,6 +104,15 @@ export default {
     },
   },
   computed: {
+    backgroundColorArr() {
+      let arr = Array(this.labelsInp.length).fill("rgba(0, 0, 0, 0.4)")
+      if (this.highlightenedIndex == -1) {
+        return arr
+      } else {
+        arr[this.highlightenedIndex] = "#013519"
+        return arr
+      }
+    },
     passData() {
       return {
         labels: this.labelsInp,
@@ -95,7 +122,7 @@ export default {
             label: "observed count",
             barPercentage: 1, //aligns bars next to each other
             categoryPercentage: 1, //aligns bars next to each other
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: this.backgroundColorArr,
             minBarLength: 5,
             borderColor: "rgba(0, 0, 0)",
             borderWidth: 1,
@@ -118,6 +145,36 @@ export default {
                 const label = this.getLabelForValue(value).toString();
                 const num1 = label.split("<")[0];
                 return num1;
+              },
+              display: true,
+              font: {
+                family: "Helvetica",
+                size: 11,
+                style: 'initial',
+              },
+              align: 'inner',
+              crossAlign: 'far',
+              // autoSkip: false,
+              autoSkipPadding: 2, // minimum distance between ticks deciding how many will be skipped
+              maxRotation: 75,
+              minRotation: 0,
+            },
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Number of patients',
+              font: {
+                size: 11,
+                family: "Helvetica"
+              }
+            },
+            ticks: {
+              font: {
+                family: "Helvetica",
+                size: 11,
+                style: 'initial',
               },
             },
           },
@@ -146,6 +203,7 @@ export default {
     valueData: {
       handler(val, oldVal) {
         this.$emit("update:value", val);
+        this.setHighlightBarIndexByValue(val);
       },
     },
     value: {
