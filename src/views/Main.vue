@@ -23,7 +23,7 @@
           <div v-else>
             <MySlider :label95q-lower="variable.alert_low" :label95q-upper="variable.alert_high" :maxim="variable.max"
               :minim="variable.min" :relevant-thresholds="variable.thrs" :categorial="variable.categ"
-              :value="variable.value" v-on:update:value="variable.value = $event">
+              :value="variable.value" :unitTickMove="variable.unitTickMove" v-on:update:value="variable.value = $event">
             </MySlider>
           </div>
         </div>

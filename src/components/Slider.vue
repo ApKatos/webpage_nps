@@ -50,20 +50,25 @@ export default {
     },
     value: {
       default: "",
+    },
+    unitTickMove: {
+      Number,
+      default: 0.1,
     }
   },
   methods: {
     startIncrement() {
       this.isIncrementing = true;
+      console.log("inkrementing true")
       this.incrementValue();
     },
     stopIncrement() {
       this.isIncrementing = false;
     },
     incrementValue() {
-      if (this.isIncrementing) {
-        this.valueData++;
-        setTimeout(this.incrementValue, 200); // Adjust the interval as needed
+      if (this.isIncrementing && this.valueData < this.maxim) {
+        this.valueData = this.valueData + this.unitTickMove;
+        setTimeout(this.incrementValue, 300); // Adjust the interval as needed
       }
     },
 
@@ -75,9 +80,9 @@ export default {
       this.isDecrementing = false;
     },
     decrementValue() {
-      if (this.isDecrementing) {
-        this.valueData--;
-        setTimeout(this.decrementValue, 200); // Adjust the interval as needed
+      if (this.isDecrementing && this.valueData >this.minim) {
+        this.valueData = this.valueData - this.unitTickMove;
+        setTimeout(this.decrementValue, 300); // Adjust the interval as needed
       }
     }
   },
@@ -98,16 +103,24 @@ export default {
     valueData: {
       handler(val) {
         this.$emit('update:value', val)
-        if (val != null && (val <= this.label95qLower || val >= this.label95qUpper)) {
+        if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
           this.color = this.colorWarn
-        } else if (val != null && val < this.label95qUpper && val > this.label95qLower) {
+        } else if (val != -1 && val < this.label95qUpper && val > this.label95qLower) {
           this.color = this.colorFine
         }
       }
     },
     value: {
       handler(val, oldVal) {
-        this.valueData = Number(val).toFixed(1);
+        let numOfDecimals;
+        if (this.unitTickMove == 1.0) {
+          numOfDecimals = 0
+        } else if (this.unitTickMove == 0.1) {
+          numOfDecimals = 1
+        } else {
+          numOfDecimals = 2
+        }
+        this.valueData = parseFloat(Number(val).toFixed(numOfDecimals));
       }
     }
 
