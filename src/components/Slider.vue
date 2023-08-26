@@ -6,14 +6,14 @@
 
       <template v-slot:prepend>
         <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
-          @mouseup="stopDecrement" @mouseleave="stopDecrement" @touchstart="startDecrement" @touchend="stopDecrement"
-          @touchmove="stopDecrement" @touchcancel="stopDecrement"></v-btn>
+          @mouseup="stopDecrement" @mouseleave="stopDecrement" @touchstart="startTouchDecrement"
+          @touchend="stopTouchDecrement" @touchmove="stopTouchDecrement"></v-btn>
       </template>
 
       <template v-slot:append>
         <v-btn size="small" variant="text" icon="mdi-plus" color="green" @mousedown="startIncrement"
-          @mouseup="stopIncrement" @mouseleave="stopIncrement" @touchstart="startIncrement" @touchend="stopIncrement"
-          @touchup="stopIncrement" @touchcancel="stopIncrement"></v-btn>
+          @mouseup="stopIncrement" @mouseleave="stopIncrement" @touchstart="startTouchIncrement"
+          @touchend="stopTouchIncrement" @touchmove="stopTouchIncrement"></v-btn>
       </template>
 
     </v-slider>
@@ -29,6 +29,7 @@ export default {
       color: "#a9a9a9",
       isIncrementing: false,
       isDecrementing: false,
+      isTouchActive: false,
     }
   },
   props: {
@@ -59,7 +60,6 @@ export default {
   methods: {
     startIncrement() {
       this.isIncrementing = true;
-      console.log("inkrementing true")
       this.incrementValue();
     },
     stopIncrement() {
@@ -68,7 +68,7 @@ export default {
     incrementValue() {
       if (this.isIncrementing && this.valueData < this.maxim) {
         this.valueData = this.valueData + this.unitTickMove;
-        setTimeout(this.incrementValue, 300); // Adjust the interval as needed
+        setTimeout(this.incrementValue, 400); // Adjust the interval as needed
       }
     },
 
@@ -80,9 +80,43 @@ export default {
       this.isDecrementing = false;
     },
     decrementValue() {
-      if (this.isDecrementing && this.valueData >this.minim) {
+      if (this.isDecrementing && this.valueData > this.minim) {
         this.valueData = this.valueData - this.unitTickMove;
-        setTimeout(this.decrementValue, 300); // Adjust the interval as needed
+        setTimeout(this.decrementValue, 400); // Adjust the interval as needed
+      }
+    },
+
+
+    startTouchIncrement() {
+      this.isTouchActive = true;
+      this.incrementValue();
+    },
+    stopTouchIncrement() {
+      if (!this.isTouchActive) {
+        return;
+      }
+      this.isTouchActive = false;
+    },
+    incrementTouch() {
+      if (this.isTouchActive && this.valueData < this.maxim) {
+        this.valueData = this.valueData + this.unitTickMove;
+        this.isTouchActive = false;
+      }
+    },
+    startTouchDecrement() {
+      this.isTouchActive = true;
+      this.decrementTouch();
+    },
+    stopTouchDecrement() {
+      if (!this.isTouchActive) {
+        return;
+      }
+      this.isTouchActive = false;
+    },
+    decrementTouch() {
+      if (this.isTouchActive && this.valueData > this.minim) {
+        this.valueData = this.valueData - this.unitTickMove;
+        this.isTouchActive = false;
       }
     }
   },
@@ -121,6 +155,11 @@ export default {
           numOfDecimals = 2
         }
         this.valueData = parseFloat(Number(val).toFixed(numOfDecimals));
+        if (this.valueData < this.minim) {
+          this.valueData = this.minim
+        } else if (this.valueData > this.maxim) {
+          this.valueData = this.maxim
+        }
       }
     }
 
