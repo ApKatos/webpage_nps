@@ -4,7 +4,7 @@
     <div class="child" v-show="open">
       <warning @closingWarning="this.open = false"></warning>
     </div>
-    <div class="child">
+    <div v-show="!open" class="child">
       <v-btn to="main" :disabled="open" center> START </v-btn>
     </div>
   </div>
