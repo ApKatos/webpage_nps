@@ -5,15 +5,13 @@
       :min="minim" :max="maxim">
 
       <template v-slot:prepend>
-        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
-          @mouseup="stopDecrement" @mouseleave="stopDecrement" @touchstart="startTouchDecrement"
-          @touchend="stopTouchDecrement" @touchmove="stopTouchDecrement"></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @click="decrementValue"
+          @touchstart="startTouchDecrement" ></v-btn>
       </template>
 
       <template v-slot:append>
-        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @mousedown="startIncrement"
-          @mouseup="stopIncrement" @mouseleave="stopIncrement" @touchstart="startTouchIncrement"
-          @touchend="stopTouchIncrement" @touchmove="stopTouchIncrement"></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @click="incrementValue"
+          @touchstart="startTouchIncrement"></v-btn>
       </template>
 
     </v-slider>
@@ -27,8 +25,6 @@ export default {
     return {
       valueData: this.value,
       color: "#a9a9a9",
-      isIncrementing: false,
-      isDecrementing: false,
       isTouchActive: false,
     }
   },
@@ -58,67 +54,30 @@ export default {
     }
   },
   methods: {
-    startIncrement() {
-      this.isIncrementing = true;
-      this.incrementValue();
-    },
-    stopIncrement() {
-      this.isIncrementing = false;
-    },
+
     incrementValue() {
-      if (this.isIncrementing && this.valueData < this.maxim) {
+      if (this.valueData < this.maxim) {
         this.valueData = this.valueData + this.unitTickMove;
-        setTimeout(this.incrementValue, 400); // Adjust the interval as needed
       }
     },
 
-    startDecrement() {
-      this.isDecrementing = true;
-      this.decrementValue();
-    },
-    stopDecrement() {
-      this.isDecrementing = false;
-    },
     decrementValue() {
-      if (this.isDecrementing && this.valueData > this.minim) {
+      if (this.valueData > this.minim) {
         this.valueData = this.valueData - this.unitTickMove;
-        setTimeout(this.decrementValue, 400); // Adjust the interval as needed
       }
     },
 
 
-    startTouchIncrement() {
-      this.isTouchActive = true;
-      this.incrementValue();
+    startTouchIncrement(event) {
+      event.preventDefault();
+      this.valueData += this.unitTickMove;
     },
-    stopTouchIncrement() {
-      if (!this.isTouchActive) {
-        return;
-      }
-      this.isTouchActive = false;
+
+    startTouchDecrement(event) {
+      event.preventDefault();
+      this.valueData -= this.unitTickMove;
     },
-    incrementTouch() {
-      if (this.isTouchActive && this.valueData < this.maxim) {
-        this.valueData = this.valueData + this.unitTickMove;
-        this.isTouchActive = false;
-      }
-    },
-    startTouchDecrement() {
-      this.isTouchActive = true;
-      this.decrementTouch();
-    },
-    stopTouchDecrement() {
-      if (!this.isTouchActive) {
-        return;
-      }
-      this.isTouchActive = false;
-    },
-    decrementTouch() {
-      if (this.isTouchActive && this.valueData > this.minim) {
-        this.valueData = this.valueData - this.unitTickMove;
-        this.isTouchActive = false;
-      }
-    }
+
   },
   computed: {
     colorWarn: {
