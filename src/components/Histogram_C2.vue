@@ -147,6 +147,9 @@ export default {
         // this will be passed as one object in the attribute options
         scales: {
           x: {
+            gridLines: {
+              display: false
+            },
             display: true,
             ticks: {
               callback: function (value, index, ticks) {
@@ -154,16 +157,16 @@ export default {
                 const num1 = label.split("<")[0];
                 return num1;
               },
-              display: true,
               font: {
                 family: "Helvetica",
                 size: 11,
                 style: 'initial',
               },
-              align: 'inner',
-              crossAlign: 'far',
-              // autoSkip: false,
-              autoSkipPadding: 2, // minimum distance between ticks deciding how many will be skipped
+              align: 'end',
+              labelOffset:-10,
+                // crossAlign: 'far',
+                // autoSkip: false,
+                autoSkipPadding: 3, // minimum distance between ticks deciding how many will be skipped
               maxRotation: 75,
               minRotation: 0,
             },
