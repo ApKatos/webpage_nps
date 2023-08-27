@@ -5,13 +5,13 @@
       :min="minim" :max="maxim">
 
       <template v-slot:prepend>
-        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @click="decrementValue"
-          @touchstart="startTouchDecrement" ></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
+          @mouseup="stopDecrement" @mouseleave="stopDecrement"></v-btn>
       </template>
 
       <template v-slot:append>
-        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @click="incrementValue"
-          @touchstart="startTouchIncrement"></v-btn>
+        <v-btn size="small" variant="text" icon="mdi-plus" color="green" @mousedown="startIncrement"
+          @mouseup="stopIncrement" @mouseleave="stopIncrement"></v-btn>
       </template>
 
     </v-slider>
@@ -20,12 +20,17 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       valueData: this.value,
       color: "#a9a9a9",
       isTouchActive: false,
+      incrementInterval: null,
+      decrementInterval: null,
+      incrementSpeed: 300, // Initial interval
+      decrementSpeed: 300  // Initial interval
     }
   },
   props: {
@@ -54,28 +59,31 @@ export default {
     }
   },
   methods: {
-
+    startIncrement() {
+      this.incrementSpeed = 300; // Reset speed
+      this.incrementValue();
+    },
+    stopIncrement() {
+      clearInterval(this.incrementInterval);
+    },
     incrementValue() {
-      if (this.valueData < this.maxim) {
-        this.valueData = this.valueData + this.unitTickMove;
-      }
-    },
-
-    decrementValue() {
-      if (this.valueData > this.minim) {
-        this.valueData = this.valueData - this.unitTickMove;
-      }
-    },
-
-
-    startTouchIncrement(event) {
-      event.preventDefault();
       this.valueData += this.unitTickMove;
+      this.incrementSpeed = Math.max(20, this.incrementSpeed - 20); // Speed up
+      this.incrementInterval = setTimeout(this.incrementValue, this.incrementSpeed);
     },
 
-    startTouchDecrement(event) {
-      event.preventDefault();
+
+    startDecrement() {
+      this.decrementSpeed = 300; // Reset speed
+      this.decrementValue();
+    },
+    stopDecrement() {
+      clearInterval(this.decrementInterval);
+    },
+    decrementValue() {
       this.valueData -= this.unitTickMove;
+      this.decrementSpeed = Math.max(20, this.decrementSpeed - 20); // Speed up
+      this.decrementInterval = setTimeout(this.decrementValue, this.decrementSpeed);
     },
 
   },
@@ -120,8 +128,7 @@ export default {
           this.valueData = this.maxim
         }
       }
-    }
-
+    },
   }
 };
 </script>
