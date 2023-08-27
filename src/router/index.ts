@@ -20,6 +20,7 @@ const routes = [
           if (rulesAccepted) {
             return true;
           } else {
+            alert("You have to confirm that you understand the usage of the website");
             return { name: "Home" };
           }
         },
