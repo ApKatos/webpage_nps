@@ -1,8 +1,8 @@
 <template>
   <v-card style="padding: 20px 0px 0px 0px; width: calc(100% - 18px);">
 
-    <v-slider v-model="valueData" step=0.1 density='compact' :color="color" thumb-size=10 thumb-label="always" hight=70
-      :min="minim" :max="maxim">
+    <v-slider v-model="valueData" :step=this.unitTickMove density='compact' :color="color" thumb-size=10
+      thumb-label="always" hight=70 :min="minim" :max="maxim">
 
       <template v-slot:prepend>
         <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
@@ -97,8 +97,10 @@ export default {
       get() {
         return "#2AA63D"
       }
+    },
+    roundSensitivity() {
+      return Math.log10(1 / this.unitTickMove)
     }
-
   },
   watch: {
     valueData: {
@@ -113,15 +115,7 @@ export default {
     },
     value: {
       handler(val, oldVal) {
-        let numOfDecimals;
-        if (this.unitTickMove == 1.0) {
-          numOfDecimals = 0
-        } else if (this.unitTickMove == 0.1) {
-          numOfDecimals = 1
-        } else {
-          numOfDecimals = 2
-        }
-        this.valueData = parseFloat(Number(val).toFixed(numOfDecimals));
+        this.valueData = parseFloat(Number(val).toFixed(this.roundSensitivity));
         if (this.valueData < this.minim) {
           this.valueData = this.minim
         } else if (this.valueData > this.maxim) {

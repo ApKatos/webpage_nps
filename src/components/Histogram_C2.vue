@@ -59,6 +59,10 @@ export default {
     },
     scaleLog: {
       default: false
+    },
+    unitTickMove: {
+      Number,
+      default: 0.1,
     }
   },
   methods: {
@@ -101,9 +105,8 @@ export default {
           this.valueData >= upval ||
           this.valueData <= downval
         ) {
-          this.valueData = Number(
-            (Number.parseFloat(upval) + Number.parseFloat(downval)) / 2
-          ).toFixed(1);
+          this.valueData =
+            ((Number.parseFloat(upval) + Number.parseFloat(downval)) / 2).toFixed(this.roundSensitivity);
         }
       }
     },
@@ -210,6 +213,9 @@ export default {
       } else if (this.scaleLog == false) {
         return "linear"
       }
+    },
+    roundSensitivity() {
+      return Math.log10(1 / this.unitTickMove)
     }
   },
   watch: {
