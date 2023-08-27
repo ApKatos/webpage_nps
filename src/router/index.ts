@@ -1,8 +1,5 @@
 // Composables
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
@@ -18,6 +15,14 @@ const routes = [
         path: "main", // No base needed for this path
         name: "Main",
         component: () => import("@/views/Main.vue"),
+        beforeEnter: () => {
+          const rulesAccepted = sessionStorage.getItem("rulesAccepted");
+          if (rulesAccepted) {
+            return true;
+          } else {
+            return { name: "Home" };
+          }
+        },
       },
       {
         path: "result", // No base needed for this path

@@ -2,7 +2,7 @@
   <div class="container">
     <h1>Welcome to the Network Phenotyping Strategy</h1>
     <div class="child" v-show="open">
-      <warning @closingWarning="this.open = false"></warning>
+      <warning @closingWarning="confirmWarning"></warning>
     </div>
     <div v-show="!open" class="child">
       <v-btn to="main" :disabled="open" center> START </v-btn>
@@ -20,6 +20,12 @@ export default {
       open: true,
     };
   },
+  methods: {
+    confirmWarning() {
+      this.open = false;
+      sessionStorage.setItem('rulesAccepted', true);
+    }
+  }
 };
 </script>
 
