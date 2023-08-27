@@ -12,6 +12,7 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
+  LogarithmicScale
 } from "chart.js";
 
 ChartJS.register(
@@ -20,7 +21,8 @@ ChartJS.register(
   Legend,
   BarElement,
   CategoryScale,
-  LinearScale
+  LinearScale,
+  LogarithmicScale
 );
 
 export default {
@@ -54,6 +56,9 @@ export default {
     unit: {
       default: "",
       require: false,
+    },
+    scaleLog: {
+      default: false
     }
   },
   methods: {
@@ -62,7 +67,7 @@ export default {
         if (value == "MALE" || value == "0")
           this.highlightenedIndex = 0
         else if (value = "FEMALE" || value == "1")
-        this.highlightenedIndex=1
+          this.highlightenedIndex = 1
       } else {
         for (let i = 0; i < this.labelsInp.length; i++) {
           const vals = this.labelsInp[i].split("<x<=")
@@ -161,6 +166,7 @@ export default {
             },
           },
           y: {
+            type: this.yScaleType,
             display: true,
             title: {
               display: true,
@@ -198,6 +204,13 @@ export default {
         onClick: this.handleChartClick,
       };
     },
+    yScaleType() {
+      if (this.scaleLog == true) {
+        return "logarithmic"
+      } else if (this.scaleLog == false) {
+        return "linear"
+      }
+    }
   },
   watch: {
     valueData: {

@@ -13,7 +13,7 @@
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
           </infoTag>
           <HistogramC2 :labelsInp="variable.labels" :dataInp="variable.data" :dataName="variable.varname"
-            :unit="variable.unit" @update:value="variable.value = $event" :value="variable.value">
+            :unit="variable.unit" @update:value="variable.value = $event" :value="variable.value" :scaleLog="variable.log">
           </HistogramC2>
           <div v-if="variable.categ">
             <BinaryButtons :labels="variable.labels" v-on:update:value="variable.value = $event" :value="variable.value"
