@@ -4,6 +4,10 @@
     <v-slider v-model="valueData" :step=this.unitTickMove density='compact' :color="color" thumb-size=7
       thumb-label="always" :min="minim" :max="observedMax">
 
+      <template v-slot:thumb-label="{ modelValue }">
+        {{ modelValue=valueData }}
+      </template>
+
       <template v-slot:prepend>
         <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
           @mouseup="stopDecrement" @mouseleave="stopDecrement"></v-btn>
@@ -114,7 +118,7 @@ export default {
     valueData: {
       handler(val) {
         this.$emit('update:value', val)
-        if (val != -1 && val < this.observedMin || val > this.observedMax) {
+        if (val != -1 && val < this.observedMin / 1.5 || val > this.observedMax * 1.5) {
           this.color = this.colorUnobserved
         } else if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
           this.color = this.colorWarn

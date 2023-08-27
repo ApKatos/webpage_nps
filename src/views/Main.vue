@@ -109,7 +109,7 @@ export default {
     },
     variablesInfoText() {
       var label = document.createElement('p');
-      label.innerHTML = `Color of the parameter informs you about the prevalence of chosen value in population this model was trained on. <ul type="square" style="margin-left:15px"><li style="color: rgb(13, 15, 12); font-weight: bold;">Unfilled value</li><li style="color: #D3A350; font-weight: bold;">Very scarcely observed value</li><li style="color: #2AA63D; font-weight: bold;">Average value </li><li style="color: rgb(219, 29, 15); font-weight: bold;">Value unobserved in training dataset</li></ul>Pressing the variable name will navigate you to input value for the field.`;
+      label.innerHTML = `Color of the parameter informs you about the prevalence of chosen value in population this model was trained on. <ul type="square" style="margin-left:15px"><li style="color: rgb(13, 15, 12); font-weight: bold;">Unfilled value</li><li style="color: #D3A350; font-weight: bold;">Very scarcely observed value</li><li style="color: #2AA63D; font-weight: bold;">Average value </li><li style="color: rgb(219, 29, 15); font-weight: bold;">Chosen value is critically outside the range observed in training dataset</li></ul>Pressing the variable name will navigate you to input value for the field.`;
       return label
     }
   },
