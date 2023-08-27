@@ -1,8 +1,8 @@
 <template>
   <v-card style="padding: 20px 0px 0px 0px; width: calc(100% - 18px);">
 
-    <v-slider v-model="valueData" :step=this.unitTickMove density='compact' :color="color" thumb-size=10
-      thumb-label="always" hight=70 :min="minim" :max="maxim">
+    <v-slider v-model="valueData" :step=this.unitTickMove density='compact' :color="color" thumb-size=7
+      thumb-label="always" :min="minim" :max="observedMax">
 
       <template v-slot:prepend>
         <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
@@ -38,10 +38,6 @@ export default {
       Number,
       required: true,
     },
-    maxim: {
-      Number,
-      required: true,
-    },
     label95qLower: {
       Number,
       required: true,
@@ -56,6 +52,13 @@ export default {
     unitTickMove: {
       Number,
       default: 0.1,
+    },
+    observedMin: {
+      Number,
+      required: false
+    },
+    observedMax: {
+      Number: false
     }
   },
   methods: {
@@ -98,6 +101,11 @@ export default {
         return "#2AA63D"
       }
     },
+    colorUnobserved: {
+      get() {
+        return "rgb(219, 29, 15)"
+      }
+    },
     roundSensitivity() {
       return Math.log10(1 / this.unitTickMove)
     }
@@ -106,7 +114,9 @@ export default {
     valueData: {
       handler(val) {
         this.$emit('update:value', val)
-        if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
+        if (val != -1 && val < this.observedMin || val > this.observedMax) {
+          this.color = this.colorUnobserved
+        } else if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
           this.color = this.colorWarn
         } else if (val != -1 && val < this.label95qUpper && val > this.label95qLower) {
           this.color = this.colorFine
@@ -118,8 +128,6 @@ export default {
         this.valueData = parseFloat(Number(val).toFixed(this.roundSensitivity));
         if (this.valueData < this.minim) {
           this.valueData = this.minim
-        } else if (this.valueData > this.maxim) {
-          this.valueData = this.maxim
         }
       }
     },

@@ -4,7 +4,9 @@
       backgroundColor: evaluatedColor(
         variable.value,
         variable.alert_high,
-        variable.alert_low
+        variable.alert_low,
+        variable.observed_max,
+        variable.observed_min
       ),
     }" @click="scrollToGraph(variable.index)">
       <div>
@@ -52,13 +54,15 @@ export default {
   },
   computed: {
     evaluatedColor() {
-      return function (varval, high, low) {
+      return function (varval, high, low, observedMax, observedMin) {
         if (varval == -1) {
           // undefined
           return "#3E4A3D"
         } else if (varval < high && varval > low) {
           // good range
           return "#2AA63D";
+        } else if (varval < observedMin || varval > observedMax) {
+          return "rgb(219, 29, 15)"
         } else {
           // outside the rande
           return "#D3A350"

@@ -9,7 +9,7 @@
     "alert_low": -1,
     "data": [3676, 1126],
     "labels": ["MALE", "FEMALE"],
-    "max": 1,
+    "observed_max": 1,
     "thrs": [0, 1],
     "decription": "The biological gender of patient.",
     "unit": ""
@@ -20,6 +20,7 @@
     "varname": "AGE",
     "index": 2,
     "min": 0,
+    "observed_min": 24,
     "alert_high": 82,
     "alert_low": 49,
     "data": [
@@ -45,7 +46,7 @@
       "83.0<x<=90.0",
       "90.0<x<=95"
     ],
-    "max": 95,
+    "observed_max": 95,
     "thrs": [33.0, 42.0, 51.0, 58.0, 64.0, 71.0, 78.0, 83.0],
     "decription": "The length of time that a person has lived.",
     "unit": "",
@@ -61,7 +62,7 @@
     "alert_low": -1,
     "data": [4147, 655],
     "labels": ["NO", "YES"],
-    "max": 1,
+    "observed_max": 1,
     "thrs": [0, 1],
     "decription": "The HBV parameter qualifies if liver infection caused by the hepatitis B virus is present in a patient.",
     "unit": ""
@@ -76,7 +77,7 @@
     "alert_low": -1,
     "data": [2201, 2601],
     "labels": ["NO", "YES"],
-    "max": 1,
+    "observed_max": 1,
     "thrs": [0, 1],
     "decription": "The HCV informs if the hepatitis C (a liver infection caused by the hepatitis C virus) is present in patient.",
     "unit": ""
@@ -87,6 +88,7 @@
     "varname": "TUMOR_NODULES",
     "index": 5,
     "min": 0,
+    "observed_min": 1,
     "alert_high": 5,
     "alert_low": 0.99,
     "data": [2714, 791, 478, 483, 157, 53, 78, 48],
@@ -100,7 +102,7 @@
       "6.0<x<=8.0",
       "8.0<x<=10"
     ],
-    "max": 10,
+    "observed_max": 10,
     "thrs": [1.5, 2.5, 3.5, 4.5, 5.5],
     "decription": "Number of tumors in patient.",
     "unit": "",
@@ -112,6 +114,7 @@
     "varname": "TUMOR_DIAM",
     "index": 6,
     "min": 0,
+    "observed_min": 0.3,
     "alert_high": 7.5,
     "alert_low": 1.1,
     "data": [
@@ -135,7 +138,7 @@
       "9.5<x<=20.2",
       "20.2<x<=30.0"
     ],
-    "max": 30,
+    "observed_max": 30,
     "thrs": [1.5, 2.1, 3.0, 4.5, 5.5, 7.5, 9.5],
     "decription": "The largest diameter of tumor in a patient.",
     "unit": "[cm]",
@@ -151,7 +154,7 @@
     "alert_low": -1,
     "data": [4229, 573],
     "labels": ["NO", "YES"],
-    "max": 1,
+    "observed_max": 1,
     "thrs": [0, 1],
     "decription": "Portal vein thrombosis describes narrowing or blockage of the portal vein by a blood clot.",
     "unit": ""
@@ -162,6 +165,7 @@
     "varname": "ALB",
     "index": 8,
     "min": 0,
+    "observed_min": 2.0,
     "alert_high": 4.5,
     "alert_low": 2.7,
     "data": [143, 79, 240, 605, 801, 332, 678, 669, 560, 440, 159, 95, 1],
@@ -180,7 +184,7 @@
       "4.7<x<=5.8",
       "5.8<x<=6.0"
     ],
-    "max": 6,
+    "observed_max": 6,
     "thrs": [2.5, 2.85, 3.4, 3.75, 4.15, 4.65],
     "decription": "Parameter for ALB informs about the amount of albumin in patient's blood.",
     "unit": "[g/dL]",
@@ -192,6 +196,7 @@
     "varname": "BILI",
     "index": 9,
     "min": 0,
+    "observed_min": 0.08,
     "alert_high": 3.4,
     "alert_low": 0.4,
     "data": [
@@ -222,7 +227,7 @@
       "10.0<x<=12.2",
       "12.2<x<=13.4"
     ],
-    "max": 13.4,
+    "observed_max": 13.4,
     "thrs": [0.45, 0.8, 1.2, 1.6, 2.0, 2.7, 3.7, 5.0, 7.2, 10.0],
     "decription": "Parameter BILI informs about the levels of bilirubin in patient's blood.",
     "unit": "[mg/dL]",
@@ -234,6 +239,7 @@
     "varname": "INR",
     "index": 10,
     "min": 0,
+    "observed_min": 0.1,
     "alert_high": 1.6,
     "alert_low": 1.0,
     "data": [8, 1080, 1358, 1326, 402, 241, 228, 73, 29, 24, 14, 7, 11, 1],
@@ -253,7 +259,7 @@
       "3.0<x<=4.3",
       "4.3<x<=4.64"
     ],
-    "max": 4.6,
+    "observed_max": 4.6,
     "thrs": [1.05, 1.16, 1.3, 1.5, 2.0, 2.5, 3.0],
     "decription": "Describes how long does it take for patient's blood to clot.",
     "unit": "[ratio]",
@@ -265,6 +271,7 @@
     "varname": "ALT",
     "index": 11,
     "min": 0,
+    "observed_min": 0.07,
     "alert_high": 5.0,
     "alert_low": 0.5,
     "data": [4103, 471, 82, 18, 41, 24, 9, 9, 6, 4, 11, 9, 2, 6, 6, 1],
@@ -286,7 +293,7 @@
       "107.0<x<=167.5",
       "167.5<x<=227.0"
     ],
-    "max": 227.0,
+    "observed_max": 227.0,
     "thrs": [5.0, 13.0, 30.0, 40.0, 48.0, 75.0, 107.0],
     "decription": "ALT stands for alanine transaminase and the value represents the amount of ALT in the blood. When liver cells are damaged, they release ALT into the bloodstream.",
     "unit": "[U/L]",
@@ -298,6 +305,7 @@
     "varname": "AST",
     "index": 12,
     "min": 0,
+    "observed_min": 0.6,
     "alert_high": 5.3,
     "alert_low": 0.5,
     "data": [3961, 590, 100, 17, 18, 25, 14, 17, 11, 7, 11, 4, 7, 3, 12, 5],
@@ -319,7 +327,7 @@
       "100.0<x<=152.0",
       "152.0<x<=203.0"
     ],
-    "max": 203.0,
+    "observed_max": 203.0,
     "thrs": [5.0, 13.0, 25.0, 40.0, 52.0, 65.0, 100.0],
     "decription": "AST stands for an enzyme - aspartate aminotransferase and informs about its amount in blood. The enzyme is mostly found in the liver, but it's also in muscles and other organs in your body. When cells that contain AST are damaged, they release the AST into patient's blood.",
     "unit": "[U/L]",
@@ -331,6 +339,7 @@
     "varname": "GGT",
     "index": 13,
     "min": 0,
+    "observed_min": 0.03,
     "alert_high": 10.0,
     "alert_low": 0.5,
     "data": [4286, 298, 77, 33, 16, 11, 18, 14, 11, 9, 8, 6, 5, 1, 8, 1],
@@ -352,7 +361,7 @@
       "250.0<x<=519.0",
       "519.0<x<=787.0"
     ],
-    "max": 787.0,
+    "observed_max": 787.0,
     "thrs": [10.0, 30.0, 50.0, 80.0, 110.0, 170.0, 250.0],
     "decription": "GGT stands for an enzyme Gamma-glutamyl transferase that's mainly found in patient's liver and the parameter informs about the amount of it in patient's blood.",
     "unit": "[U/L]",
@@ -364,6 +373,7 @@
     "varname": "ALKP",
     "index": 14,
     "min": 0,
+    "observed_min": 0.03,
     "alert_high": 3.0,
     "alert_low": 0.5,
     "data": [
@@ -390,7 +400,7 @@
       "300.0<x<=523.0",
       "523.0<x<=745.0"
     ],
-    "max": 745.0,
+    "observed_max": 745.0,
     "thrs": [25.0, 70.0, 120.0, 150.0, 240.0, 300.0],
     "decription": "ALKP parameter quantifies the amount of ALP (enzyme - alkaline phosphatase) in your blood. Abnormal levels of ALP in patient's blood may be a sign of a wide range of health conditions, including liver disease, bone disorders, and chronic kidney disease.",
     "unit": "[U/L]",
@@ -402,6 +412,7 @@
     "varname": "AFP",
     "index": 15,
     "min": 0,
+    "observed_min": 0.13,
     "alert_high": 1600.0,
     "alert_low": 2.0,
     "data": [4213, 174, 225, 69, 47, 26, 12, 13, 9, 1, 11, 2],
@@ -419,7 +430,7 @@
       "80000.0<x<=350150.5",
       "350150.5<x<=620300.0"
     ],
-    "max": 620300,
+    "observed_max": 620300,
     "thrs": [500.0, 5000.0, 20000.0, 50000.0, 80000.0],
     "decription": "Parameter AFP informs about the level of alpha-fetoprotein in patient's blood. AFP in non-pregt people is mainly measured as a tumor marker.",
     "unit": "[ng/mL]",
@@ -431,6 +442,7 @@
     "varname": "HEMOGLOBIN",
     "index": 16,
     "min": 0,
+    "observed_min": 5.0,
     "alert_high": 15.8,
     "alert_low": 9.3,
     "data": [
@@ -453,7 +465,7 @@
       "16.5<x<=18.4",
       "18.4<x<=19.4"
     ],
-    "max": 19.4,
+    "observed_max": 19.4,
     "thrs": [8.5, 10.5, 12.0, 13.4, 14.6, 15.6, 16.5],
     "decription": "Informs about the amount of protein (in g/dL) contained in red blood cells that is responsible for delivery of oxygen to the tissues.",
     "unit": "[g/dL]",
@@ -465,6 +477,7 @@
     "varname": "PLATELETS",
     "index": 17,
     "min": 0,
+    "observed_min": 11,
     "alert_high": 254.0,
     "alert_low": 44.1,
     "data": [
@@ -491,7 +504,7 @@
       "400.0<x<=595.5",
       "595.5<x<=790"
     ],
-    "max": 790,
+    "observed_max": 790,
     "thrs": [50.0, 80.0, 125.0, 150.0, 185.0, 230.0, 310.0, 400.0],
     "decription": "Parameter informs about the amount of small, colorless cell fragments in patient's blood that form clots and stop or prevent bleeding.",
     "unit": "[count/μL]",
