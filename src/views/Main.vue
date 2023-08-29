@@ -31,10 +31,10 @@
         </div>
       </div>
       <div class="endbutton">
-        <v-btn @click="callModel()" :disabled="!allVarsSubmitted" :loading="pressedButton">
+        <v-btn @click="callModel()" :disabled="!allVarsInputed" :loading="pressedButton">
           SUBMIT
         </v-btn>
-        <infoTag v-if="allVarsSubmitted" style=" margin-left: 5px; margin-top: 5px;"> Check if all values in the left
+        <infoTag v-if="allVarsInputed" style=" margin-left: 5px; margin-top: 5px;"> Check if all values in the left
           panel are correct and submit</infoTag>
         <infoTag v-else style="margin-left: 5px; margin-top: 5px;">Fill all variables before submitting the input
           parameters</infoTag>
@@ -64,12 +64,13 @@ export default {
   methods: {
     loadData() {
       Object.entries(jsonData).forEach(([_, value]) => {
-        value["value"] = -1;
+        value["value"] = 1;
+        value["checkedBeforeSubmit"] = false;
         this.variables.push(value);
       });
     },
     createJSONfromVariables(message, event) {
-      if (event && this.allVarsSubmitted) {
+      if (event && this.allVarsInputed) {
         let arr = {};
         for (let i = 0; i < this.variables.length; i++) {
           let variable = this.variables[i];
@@ -84,22 +85,74 @@ export default {
     initModel() {
       this.model = new ModelWrapper();
     },
-    callModel() {
-      let inputJSON = this.createJSONfromVariables(
-        "Form cannot be submitted yet.",
-        this.allVarsSubmitted
-      );
-      let resultJSON = this.model.process(inputJSON);
-      this.resultJSON = resultJSON;
-      this.$router.push({ name: "Result", query: { result: resultJSON } });
+    calculatePercentageFraction(value, total) {
+      return Number(parseFloat(value) / parseFloat(total) * 100).toFixed(1)
     },
+    callModel() {
+      this.variables.forEach(variable => {
+        if (!variable.checkedBeforeSubmit) {
+          // check if out of range
+          if (variable.value > variable.observed_max || variable.value < variable.observed_min) {
+            // yes
+            let confirmText;
+            if (variable.value > variable.observed_max) {
+              // * check upper range
+              confirmText = variable.varname + " has value " + this.calculatePercentageFraction(variable.value, variable.observed_max) + "% larger than the maximum observed value in training dataset"
+            } else {
+              // * check lower range
+              confirmText = variable.varname + " has value " + this.calculatePercentageFraction(variable.value, variable.observed_min) + "% smaller than the minimum observed value in training dataset"
+            }
+
+            const res = confirm(confirmText)
+            if (res) {
+              console.log("ze vraj OK")
+              variable.checkedBeforeSubmit = true
+            } else {
+              console.log("Nastavim na -1")
+              variable.value = "-1"
+              variable.checkedBeforeSubmit = false
+              // console.log(" neni to OK, zoomujem")
+              // const graphElement = document.getElementById('input-graph-' + variable.index);
+              // if (graphElement) {
+              //   console.log("zooming done")
+              //   graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
+              // }
+            }
+          } else {
+            // no
+            variable.checkedBeforeSubmit = true
+          }
+        }
+      });
+      console.log("result of allvarschecked", this.allVarsChecked)
+      if (this.allVarsChecked) {
+        console.log("vsetky premnne su checknute")
+        let inputJSON = this.createJSONfromVariables(
+          "Some parameters have invalid value. Can not be submitted .",
+          this.allVarsInputed
+        );
+        let resultJSON = this.model.process(inputJSON);
+        this.resultJSON = resultJSON;
+        this.$router.push({ name: "Result", query: { result: resultJSON } });
+      }
+    },
+
   },
   mounted() {
     this.loadData();
     this.initModel();
   },
   computed: {
-    allVarsSubmitted() {
+    allVarsChecked() {
+      let res = true;
+      this.variables.forEach(variable => {
+        if (!variable.checkedBeforeSubmit) {
+          res = false
+        }
+      })
+      return res;
+    },
+    allVarsInputed() {
       for (let variable of this.variables) {
         if (variable.value == -1) {
           return false;
