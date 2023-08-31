@@ -121,7 +121,7 @@ export default {
       // If the variable is unchecked or was evaluated to be checked again
       if (!variable.checkedBeforeSubmit) {
         // If the value set has already been confirmed, then do not ask again for the confirmation
-        if (variable.value > variable.observed_max || variable.value < variable.observed_min && variable.value != -1) {
+        if (variable.value > variable.observed_max * this.$warningOnMultiple || variable.value < variable.observed_min / this.$warningOnMultiple && variable.value != -1) {
           variable.dialogVisible = true;
           variable.checkedBeforeSubmit = false
         } else {

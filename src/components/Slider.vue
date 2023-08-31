@@ -119,7 +119,7 @@ export default {
     valueData: {
       handler(val) {
         this.$emit('update:value', val)
-        if (val != -1 && val < this.observedMin / 1.5 || val > this.observedMax * 1.5) {
+        if (val != -1 && val < this.observedMin / this.$warningOnMultiple || val > this.observedMax * this.$warningOnMultiple) {
           this.color = this.colorUnobserved
         } else if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
           this.color = this.colorWarn

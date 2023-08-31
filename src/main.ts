@@ -15,6 +15,7 @@ import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
 
 const app = createApp(App);
+app.config.globalProperties.$warningOnMultiple = 2;
 
 registerPlugins(app);
 

@@ -61,7 +61,7 @@ export default {
         } else if (varval < high && varval > low) {
           // good range
           return "#2AA63D";
-        } else if (varval < observedMin / 1.5 || varval > observedMax * 1.5) {
+        } else if (varval < observedMin / this.$warningOnMultiple || varval > observedMax * this.$warningOnMultiple) {
           return "rgb(219, 29, 15)"
         } else {
           // outside the rande
