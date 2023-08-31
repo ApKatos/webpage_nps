@@ -10,22 +10,22 @@
 
       <template v-slot:prepend>
         <v-btn size="small" variant="text" icon="mdi-minus" color="red" @mousedown="startDecrement"
-          @mouseup="stopDecrement" @mouseleave="stopDecrement"></v-btn>
+          @mouseup="stopDecrement()" @mouseleave="stopDecrement()"></v-btn>
       </template>
 
       <template v-slot:append>
         <v-btn size="small" variant="text" icon="mdi-plus" color="green" @mousedown="startIncrement"
-          @mouseup="stopIncrement" @mouseleave="stopIncrement"></v-btn>
+          @mouseup="stopIncrement()" @mouseleave="stopIncrement()"></v-btn>
       </template>
 
     </v-slider>
-
   </v-card>
 </template>
 
 <script>
-
+import CheckRangeDialogVue from './CheckRangeDialog.vue';
 export default {
+  components: { CheckRangeDialogVue },
   data() {
     return {
       valueData: this.value,
@@ -34,7 +34,8 @@ export default {
       incrementInterval: null,
       decrementInterval: null,
       incrementSpeed: 300, // Initial interval
-      decrementSpeed: 300  // Initial interval
+      decrementSpeed: 300,  // Initial interval
+      dialogVisible: false, // Controls dialog visibility
     }
   },
   props: {
@@ -63,7 +64,7 @@ export default {
     },
     observedMax: {
       Number: false
-    }
+    },
   },
   methods: {
     startIncrement() {
@@ -92,7 +93,6 @@ export default {
       this.decrementSpeed = Math.max(20, this.decrementSpeed - 20); // Speed up
       this.decrementInterval = setTimeout(this.decrementValue, this.decrementSpeed);
     },
-
   },
   computed: {
     colorWarn: {
@@ -112,7 +112,8 @@ export default {
     },
     roundSensitivity() {
       return Math.log10(1 / this.unitTickMove)
-    }
+    },
+
   },
   watch: {
     valueData: {

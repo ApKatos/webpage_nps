@@ -7,28 +7,34 @@
       <var-box :variables="variables" app density="compact"></var-box>
     </div>
     <div>
-      <div class="container" v-for="  variable   in   variables  " :key="variable.varname">
-        <div class="graph" :id="'input-graph-' + variable.index">
+      <div class="container" v-for="  variable   in        variables       " :key="variable.varname">
+        <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)">
           <!-- <p>{{ variable.value }}</p> -->
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
           </infoTag>
           <HistogramC2 :labelsInp="variable.labels" :unitTickMove="variable.unitTickMove" :dataInp="variable.data"
-            :dataName="variable.varname" :unit="variable.unit" @update:value="variable.value = $event"
-            :value="variable.value" :scaleLog="variable.log">
+            :dataName="variable.varname" :unit="variable.unit"
+            @update:value="(newValue) => this.updateVariableValue(variable, newValue)" :value="variable.value"
+            :scaleLog="variable.log">
           </HistogramC2>
           <div v-if="variable.categ">
-            <BinaryButtons :labels="variable.labels" v-on:update:value="variable.value = $event" :value="variable.value"
+            <BinaryButtons :labels="variable.labels"
+              @update:value="(newValue) => this.updateVariableValue(variable, newValue)" :value="variable.value"
               :thrs="variable.thrs">
             </BinaryButtons>
           </div>
           <div v-else>
             <MySlider :label95q-lower="variable.alert_low" :label95q-upper="variable.alert_high" :minim="variable.min"
-              :relevant-thresholds="variable.thrs" :categorial="variable.categ" :value="variable.value"
-              :observedMin="variable.observed_min" :observedMax="variable.observed_max"
-              :unitTickMove="variable.unitTickMove" v-on:update:value="variable.value = $event">
+              :categorial="variable.categ" :value="variable.value" :observedMin="variable.observed_min"
+              :observedMax="variable.observed_max" :unitTickMove="variable.unitTickMove"
+              v-on:update:value="(newValue) => this.updateVariableValue(variable, newValue)">
             </MySlider>
           </div>
         </div>
+        <check-range-dialog-vue :visibility="variable.dialogVisible" :valueData="variable.value"
+          :observedMax="variable.observed_max" :observedMin="variable.observed_min"
+          @update:checked="(response) => { this.toggleDialogVisibility(variable, response) }"
+          :variableName="variable.varname"></check-range-dialog-vue>
       </div>
       <div class="endbutton">
         <v-btn @click="callModel()" :disabled="!allVarsInputed" :loading="pressedButton">
@@ -50,9 +56,10 @@ import MySlider from "../components/Slider.vue";
 import BinaryButtons from "@/components/BinaryButtons.vue";
 import VarBox from "../components/varInfoBox.vue";
 import infoTag from "../components/InfoTag.vue";
+import CheckRangeDialogVue from "../components/CheckRangeDialog.vue";
 import { ModelWrapper } from "../utils/Model.ts";
 export default {
-  components: { HistogramC2, MySlider, BinaryButtons, VarBox, infoTag },
+  components: { HistogramC2, MySlider, BinaryButtons, VarBox, infoTag, CheckRangeDialogVue },
   data() {
     return {
       variables: [],
@@ -64,8 +71,9 @@ export default {
   methods: {
     loadData() {
       Object.entries(jsonData).forEach(([_, value]) => {
-        value["value"] = 1;
+        value["value"] = -1;
         value["checkedBeforeSubmit"] = false;
+        value["dialogVisible"] = false;
         this.variables.push(value);
       });
     },
@@ -89,41 +97,7 @@ export default {
       return Number(parseFloat(value) / parseFloat(total) * 100).toFixed(1)
     },
     callModel() {
-      this.variables.forEach(variable => {
-        if (!variable.checkedBeforeSubmit) {
-          // check if out of range
-          if (variable.value > variable.observed_max || variable.value < variable.observed_min) {
-            // yes
-            let confirmText;
-            if (variable.value > variable.observed_max) {
-              // * check upper range
-              confirmText = variable.varname + " has value " + this.calculatePercentageFraction(variable.value, variable.observed_max) + "% larger than the maximum observed value in training dataset"
-            } else {
-              // * check lower range
-              confirmText = variable.varname + " has value " + this.calculatePercentageFraction(variable.value, variable.observed_min) + "% smaller than the minimum observed value in training dataset"
-            }
-
-            const res = confirm(confirmText)
-            if (res) {
-              console.log("ze vraj OK")
-              variable.checkedBeforeSubmit = true
-            } else {
-              console.log("Nastavim na -1")
-              variable.value = "-1"
-              variable.checkedBeforeSubmit = false
-              // console.log(" neni to OK, zoomujem")
-              // const graphElement = document.getElementById('input-graph-' + variable.index);
-              // if (graphElement) {
-              //   console.log("zooming done")
-              //   graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
-              // }
-            }
-          } else {
-            // no
-            variable.checkedBeforeSubmit = true
-          }
-        }
-      });
+      this.checkAllVars()
       console.log("result of allvarschecked", this.allVarsChecked)
       if (this.allVarsChecked) {
         console.log("vsetky premnne su checknute")
@@ -136,7 +110,42 @@ export default {
         this.$router.push({ name: "Result", query: { result: resultJSON } });
       }
     },
-
+    toggleDialogVisibility(variable, response) {
+      // this.$emit('update:checked:variable', response)
+      if (response) {
+        variable.checkedBeforeSubmit = true
+      } else {
+        variable.checkedBeforeSubmit = false
+      }
+      variable.dialogVisible = false
+    },
+    ifToShowDialog(variable) {
+      // If the variable is unchecked or was evaluated to be checked again
+      if (!variable.checkedBeforeSubmit) {
+        // If the value set has already been confirmed, then do not ask again for the confirmation
+        if (variable.value > variable.observed_max || variable.value < variable.observed_min && variable.value != -1) {
+          variable.dialogVisible = true;
+          variable.checkedBeforeSubmit = false
+        } else {
+          variable.checkedBeforeSubmit = true
+        }
+      }
+    },
+    updateVariableValue(variable, newValue) {
+      variable.value = newValue;
+      variable.checkedBeforeSubmit = false;
+      console.log("value of variable ", variable.varname, " has been changed to ", variable.checkedBeforeSubmit)
+    },
+    checkAllVars() {
+      this.variables.forEach(variable => {
+        if (!variable.checkedBeforeSubmit) {
+          console.log("variable is wrong ", variable.varname)
+          variable.dialogVisible = true
+        } else {
+          console.log("variable: ", variable.varname, " is checked and correct")
+        }
+      })
+    }
   },
   mounted() {
     this.loadData();
@@ -153,6 +162,7 @@ export default {
       return res;
     },
     allVarsInputed() {
+      // Method that enables visibility of the SUBMIT button. Each value MUST be set.
       for (let variable of this.variables) {
         if (variable.value == -1) {
           return false;
@@ -166,6 +176,9 @@ export default {
       return label
     }
   },
+  watch: {
+
+  }
 };
 </script>
 
