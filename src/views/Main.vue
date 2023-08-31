@@ -98,9 +98,7 @@ export default {
     },
     callModel() {
       this.checkAllVars()
-      console.log("result of allvarschecked", this.allVarsChecked)
       if (this.allVarsChecked) {
-        console.log("vsetky premnne su checknute")
         let inputJSON = this.createJSONfromVariables(
           "Some parameters have invalid value. Can not be submitted .",
           this.allVarsInputed
@@ -134,15 +132,11 @@ export default {
     updateVariableValue(variable, newValue) {
       variable.value = newValue;
       variable.checkedBeforeSubmit = false;
-      console.log("value of variable ", variable.varname, " has been changed to ", variable.checkedBeforeSubmit)
     },
     checkAllVars() {
       this.variables.forEach(variable => {
         if (!variable.checkedBeforeSubmit) {
-          console.log("variable is wrong ", variable.varname)
           variable.dialogVisible = true
-        } else {
-          console.log("variable: ", variable.varname, " is checked and correct")
         }
       })
     }
