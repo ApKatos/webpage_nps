@@ -1,6 +1,6 @@
 <template>
   <!-- Dialog Component -->
-  <v-dialog v-model="visibility" persistent width="auto">
+  <v-dialog v-model="visibility" persistent width="auto" scroll-strategy="reposition">
     <!-- Dialog Content -->
     <v-card>
       <v-card-title class="text-h7">
