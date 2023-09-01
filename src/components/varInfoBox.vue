@@ -50,15 +50,19 @@ export default {
         else value = undefinedValue
       } else value = variable.value
       return value
+    },
+    getWarningOnMultiple() {
+      return this.$warningOnMultiple
     }
   },
   computed: {
     evaluatedColor() {
       return function (varval, high, low, observedMax, observedMin) {
+        const warningOnMultiple = this.getWarningOnMultiple()
         if (varval == -1) {
           // undefined
           return "#3E4A3D"
-        } else if (varval < observedMin / this.$warningOnMultiple || varval > observedMax * this.$warningOnMultiple) {
+        } else if (varval < observedMin / warningOnMultiple || varval > observedMax * warningOnMultiple) {
           return "rgb(219, 29, 15)"
         } else if (varval < high && varval > low) {
           // good range
