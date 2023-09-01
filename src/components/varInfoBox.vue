@@ -58,11 +58,11 @@ export default {
         if (varval == -1) {
           // undefined
           return "#3E4A3D"
+        } else if (varval < observedMin / this.$warningOnMultiple || varval > observedMax * this.$warningOnMultiple) {
+          return "rgb(219, 29, 15)"
         } else if (varval < high && varval > low) {
           // good range
           return "#2AA63D";
-        } else if (varval < observedMin / this.$warningOnMultiple || varval > observedMax * this.$warningOnMultiple) {
-          return "rgb(219, 29, 15)"
         } else {
           // outside the rande
           return "#D3A350"
