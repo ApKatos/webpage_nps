@@ -10,15 +10,15 @@
             76.55,
             23.45
         ],
-        "labels": [
-            "0",
-            "1"
-        ],
+        "labels":  ["MALE", "FEMALE"],
         "max": 1,
         "thrs": [
             0,
             1
-        ]
+        ],
+        "log": false,
+        "decription": "The biological gender of patient.",
+        "unit": ""
     },
     "AGE": {
         "categ": 0,
@@ -59,7 +59,11 @@
             71.0,
             78.0,
             83.0
-        ]
+        ],
+        "log": false,
+        "decription": "The length of time that a person has lived.",
+        "unit": "",
+        "unitTickMove": 1.0
     },
     "HBV": {
         "categ": 1,
@@ -72,15 +76,15 @@
             86.36,
             13.64
         ],
-        "labels": [
-            "0",
-            "1"
-        ],
+        "labels": ["NO", "YES"],
         "max": 1,
         "thrs": [
             0,
             1
-        ]
+        ],
+        "log": false,
+        "decription": "The HBV parameter qualifies if liver infection caused by the hepatitis B virus is present in a patient.",
+        "unit": ""
     },
     "HCV": {
         "categ": 1,
@@ -93,15 +97,15 @@
             45.84,
             54.16
         ],
-        "labels": [
-            "0",
-            "1"
-        ],
+        "labels":  ["NO", "YES"],
         "max": 1,
         "thrs": [
             0,
             1
-        ]
+        ],
+        "log": false,
+        "decription": "The HCV informs if the hepatitis C (a liver infection caused by the hepatitis C virus) is present in patient.",
+        "unit": ""
     },
     "TUMOR_NODULES": {
         "categ": 0,
@@ -133,7 +137,10 @@
             3.5,
             4.5,
             5.5
-        ]
+        ],
+        "log": false,
+        "unit": "",
+        "unitTickMove": 1.0
     },
     "TUMOR_DIAM": {
         "categ": 0,
@@ -171,7 +178,11 @@
             5.5,
             7.5,
             9.5
-        ]
+        ],
+        "log": false,
+        "decription": "The largest diameter of tumor in a patient.",
+        "unit": "[cm]",
+        "unitTickMove": 0.1
     },
     "PVT": {
         "categ": 1,
@@ -184,15 +195,15 @@
             88.07,
             11.93
         ],
-        "labels": [
-            "0",
-            "1"
-        ],
+        "labels": ["NO", "YES"],
         "max": 1,
         "thrs": [
             0,
             1
-        ]
+        ],
+        "log": false,
+        "decription": "Portal vein thrombosis describes narrowing or blockage of the portal vein by a blood clot.",
+        "unit": ""
     },
     "ALB": {
         "categ": 0,
@@ -227,7 +238,11 @@
             3.75,
             4.15,
             4.65
-        ]
+        ],
+        "log": false,
+        "decription": "Parameter for ALB informs about the amount of albumin in patient's blood.",
+        "unit": "[g/dL]",
+        "unitTickMove": 0.1
     },
     "BILI": {
         "categ": 0,
@@ -274,7 +289,11 @@
             5.0,
             7.2,
             10.0
-        ]
+        ],
+        "log": false,
+        "decription": "Parameter BILI informs about the levels of bilirubin in patient's blood.",
+        "unit": "[mg/dL]",
+        "unitTickMove": 0.1
     },
     "INR": {
         "categ": 0,
@@ -312,7 +331,11 @@
             2.0,
             2.5,
             3.0
-        ]
+        ],
+        "log": false,
+        "decription": "Describes how long does it take for patient's blood to clot.",
+        "unit": "[ratio]",
+        "unitTickMove": 0.01
     },
     "ALT": {
         "categ": 0,
@@ -350,7 +373,11 @@
             48.0,
             75.0,
             107.0
-        ]
+        ],
+        "log": true,
+        "decription": "ALT stands for alanine transaminase and the value represents the amount of ALT in the blood. When liver cells are damaged, they release ALT into the bloodstream.",
+        "unit": "[U/L]",
+        "unitTickMove": 0.1
     },
     "AST": {
         "categ": 0,
@@ -388,7 +415,11 @@
             52.0,
             65.0,
             100.0
-        ]
+        ],
+        "log": true,
+        "decription": "AST stands for an enzyme - aspartate aminotransferase and informs about its amount in blood. The enzyme is mostly found in the liver, but it's also in muscles and other organs in your body. When cells that contain AST are damaged, they release the AST into patient's blood.",
+        "unit": "[U/L]",
+        "unitTickMove": 0.1
     },
     "GGT": {
         "categ": 0,
@@ -426,7 +457,11 @@
             110.0,
             170.0,
             250.0
-        ]
+        ],
+        "log": true,
+        "decription": "GGT stands for an enzyme Gamma-glutamyl transferase that's mainly found in patient's liver and the parameter informs about the amount of it in patient's blood.",
+        "unit": "[U/L]",
+        "unitTickMove": 0.1
     },
     "ALKP": {
         "categ": 0,
@@ -461,7 +496,11 @@
             150.0,
             240.0,
             300.0
-        ]
+        ],
+        "log": true,
+        "decription": "ALKP parameter quantifies the amount of ALP (enzyme - alkaline phosphatase) in your blood. Abnormal levels of ALP in patient's blood may be a sign of a wide range of health conditions, including liver disease, bone disorders, and chronic kidney disease.",
+        "unit": "[U/L]",
+        "unitTickMove": 0.1
     },
     "AFP": {
         "categ": 0,
@@ -493,7 +532,11 @@
             20000.0,
             50000.0,
             80000.0
-        ]
+        ],
+        "log": true,
+        "decription": "Parameter AFP informs about the level of alpha-fetoprotein in patient's blood. AFP in non-pregt people is mainly measured as a tumor marker.",
+        "unit": "[ng/mL]",
+        "unitTickMove": 0.1
     },
     "HEMOGLOBIN": {
         "categ": 0,
@@ -531,7 +574,11 @@
             14.6,
             15.6,
             16.5
-        ]
+        ],
+        "log": false,
+        "decription": "Informs about the amount of protein (in g/dL) contained in red blood cells that is responsible for delivery of oxygen to the tissues.",
+        "unit": "[g/dL]",
+        "unitTickMove": 0.1
     },
     "PLATELETS": {
         "categ": 0,
@@ -572,6 +619,10 @@
             230.0,
             310.0,
             400.0
-        ]
+        ],
+        "log": false,
+        "decription": "Parameter informs about the amount of small, colorless cell fragments in patient's blood that form clots and stop or prevent bleeding.",
+        "unit": "[count/μL]",
+        "unitTickMove": 0.1
     }
 }
