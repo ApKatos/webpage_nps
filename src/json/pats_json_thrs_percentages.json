@@ -16,6 +16,7 @@
             0,
             1
         ],
+        "observed_max": 1,
         "log": false,
         "decription": "The biological gender of patient.",
         "unit": ""
@@ -60,6 +61,8 @@
             78.0,
             83.0
         ],
+        "observed_max": 95,
+        "observed_min": 24,
         "log": false,
         "decription": "The length of time that a person has lived.",
         "unit": "",
@@ -82,6 +85,7 @@
             0,
             1
         ],
+        "observed_max": 1,
         "log": false,
         "decription": "The HBV parameter qualifies if liver infection caused by the hepatitis B virus is present in a patient.",
         "unit": ""
@@ -103,6 +107,7 @@
             0,
             1
         ],
+        "observed_max": 1,
         "log": false,
         "decription": "The HCV informs if the hepatitis C (a liver infection caused by the hepatitis C virus) is present in patient.",
         "unit": ""
@@ -138,6 +143,8 @@
             4.5,
             5.5
         ],
+        "observed_max": 10,
+        "observed_min": 1,
         "log": false,
         "unit": "",
         "unitTickMove": 1.0
@@ -179,6 +186,8 @@
             7.5,
             9.5
         ],
+        "observed_max": 30,
+        "observed_min": 0.3,
         "log": false,
         "decription": "The largest diameter of tumor in a patient.",
         "unit": "[cm]",
@@ -201,6 +210,7 @@
             0,
             1
         ],
+        "observed_max": 1,
         "log": false,
         "decription": "Portal vein thrombosis describes narrowing or blockage of the portal vein by a blood clot.",
         "unit": ""
@@ -239,6 +249,8 @@
             4.15,
             4.65
         ],
+        "observed_max": 6,
+        "observed_min": 2.0,
         "log": false,
         "decription": "Parameter for ALB informs about the amount of albumin in patient's blood.",
         "unit": "[g/dL]",
@@ -290,6 +302,8 @@
             7.2,
             10.0
         ],
+        "observed_max": 13.4,
+        "observed_min": 0.08,
         "log": false,
         "decription": "Parameter BILI informs about the levels of bilirubin in patient's blood.",
         "unit": "[mg/dL]",
@@ -332,6 +346,8 @@
             2.5,
             3.0
         ],
+        "observed_max": 4.6,
+        "observed_min": 0.1,
         "log": false,
         "decription": "Describes how long does it take for patient's blood to clot.",
         "unit": "[ratio]",
@@ -374,6 +390,8 @@
             75.0,
             107.0
         ],
+        "observed_max": 227.0,
+        "observed_min": 0.07,
         "log": true,
         "decription": "ALT stands for alanine transaminase and the value represents the amount of ALT in the blood. When liver cells are damaged, they release ALT into the bloodstream.",
         "unit": "[U/L]",
@@ -416,6 +434,8 @@
             65.0,
             100.0
         ],
+        "observed_max": 203.0,
+        "observed_min": 0.6,
         "log": true,
         "decription": "AST stands for an enzyme - aspartate aminotransferase and informs about its amount in blood. The enzyme is mostly found in the liver, but it's also in muscles and other organs in your body. When cells that contain AST are damaged, they release the AST into patient's blood.",
         "unit": "[U/L]",
@@ -458,6 +478,8 @@
             170.0,
             250.0
         ],
+        "observed_max": 787.0,
+        "observed_min": 0.03,
         "log": true,
         "decription": "GGT stands for an enzyme Gamma-glutamyl transferase that's mainly found in patient's liver and the parameter informs about the amount of it in patient's blood.",
         "unit": "[U/L]",
@@ -497,6 +519,8 @@
             240.0,
             300.0
         ],
+        "observed_max": 745.0,
+        "observed_min": 0.03,
         "log": true,
         "decription": "ALKP parameter quantifies the amount of ALP (enzyme - alkaline phosphatase) in your blood. Abnormal levels of ALP in patient's blood may be a sign of a wide range of health conditions, including liver disease, bone disorders, and chronic kidney disease.",
         "unit": "[U/L]",
@@ -533,6 +557,8 @@
             50000.0,
             80000.0
         ],
+        "observed_max": 620300,
+        "observed_min": 0.13,
         "log": true,
         "decription": "Parameter AFP informs about the level of alpha-fetoprotein in patient's blood. AFP in non-pregt people is mainly measured as a tumor marker.",
         "unit": "[ng/mL]",
@@ -575,6 +601,8 @@
             15.6,
             16.5
         ],
+        "observed_max": 19.4,
+        "observed_min": 5.0,
         "log": false,
         "decription": "Informs about the amount of protein (in g/dL) contained in red blood cells that is responsible for delivery of oxygen to the tissues.",
         "unit": "[g/dL]",
@@ -620,6 +648,8 @@
             310.0,
             400.0
         ],
+        "observed_max": 790,
+        "observed_min": 11,
         "log": false,
         "decription": "Parameter informs about the amount of small, colorless cell fragments in patient's blood that form clots and stop or prevent bleeding.",
         "unit": "[count/μL]",

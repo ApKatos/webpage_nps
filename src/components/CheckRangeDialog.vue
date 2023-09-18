@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     calculateMultiple(value, total) {
-      console.log("poctam multiple")
       return Number(parseFloat(value) / parseFloat(total)).toFixed(1);
     },
   },
