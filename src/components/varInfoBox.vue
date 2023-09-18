@@ -32,7 +32,7 @@ export default {
   methods: {
     scrollToGraph(index) {
       const graphElement = document.getElementById('input-graph-' + index);
-      if (graphElement) {
+      if (graphElement) { 
         graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
       }
     },
