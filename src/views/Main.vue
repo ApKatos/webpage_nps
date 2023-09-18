@@ -8,7 +8,8 @@
     </div>
     <div>
       <div class="container" v-for="  variable   in        variables       " :key="variable.varname">
-        <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)">
+        <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)"
+          @touchcancel="this.ifToShowDialog(variable)">
           <!-- <p>{{ variable.value }}</p> -->
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
           </infoTag>
@@ -51,7 +52,7 @@
 
 <script>
 import HistogramC2 from "../components/Histogram_C2.vue";
-import jsonData from "../json/pats_fixedbug_intervals.json";
+import jsonData from "../json/pats_json_thrs_percentages.json";
 import MySlider from "../components/Slider.vue";
 import BinaryButtons from "@/components/BinaryButtons.vue";
 import VarBox from "../components/varInfoBox.vue";

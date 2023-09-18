@@ -127,7 +127,7 @@ export default {
         datasets: [
           {
             data: this.dataInp,
-            label: "observed count",
+            label: "Percentage",
             barPercentage: 1, //aligns bars next to each other
             categoryPercentage: 1, //aligns bars next to each other
             backgroundColor: this.backgroundColorArr,
@@ -163,15 +163,18 @@ export default {
                 style: 'initial',
               },
               align: 'end',
-              labelOffset:-10,
-                // crossAlign: 'far',
-                // autoSkip: false,
-                autoSkipPadding: 3, // minimum distance between ticks deciding how many will be skipped
+              labelOffset: -10,
+              // crossAlign: 'far',
+              // autoSkip: false,
+              autoSkipPadding: 3, // minimum distance between ticks deciding how many will be skipped
               maxRotation: 75,
               minRotation: 0,
             },
           },
           y: {
+            min: 0,
+            max: 100,// Your absolute max value
+
             type: this.yScaleType,
             display: true,
             title: {
@@ -183,6 +186,9 @@ export default {
               }
             },
             ticks: {
+              callback: function (value) {
+                return (value / this.max * 100).toFixed(0) + '%'; // convert it to percentage
+              },
               font: {
                 family: "Helvetica",
                 size: 11,
@@ -205,6 +211,13 @@ export default {
               family: "Helvetica",
             },
           },
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              // label: (tooltipItem) => `Percentage: ${tooltipItem.parsed.y}%`
+              label: (tooltipItem) => `${tooltipItem.parsed.y}%`
+            }
+          }
         },
         responsive: true,
         onClick: this.handleChartClick,
