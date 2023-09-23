@@ -1,6 +1,6 @@
 <template>
   <!-- Dialog Component -->
-  <v-dialog v-model="visibility" persistent width="auto" scroll-strategy="reposition">
+  <v-dialog v-model="showDialog" persistent width="auto" scroll-strategy="reposition">
     <!-- Dialog Content -->
     <v-card>
       <v-card-title class="text-h7">
@@ -11,6 +11,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
+        <!-- Emitting update:checked that will change the value of prop "visibility" in parent component -->
         <v-btn color="green-darken-1" variant="text" @click="this.$emit('update:checked', false)">
           No, I am going to change it
         </v-btn>
@@ -24,6 +25,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      showDialog: this.visibility
+    }
+  },
   props: {
     visibility: { Boolean },
     valueData: { Number },
@@ -62,5 +68,10 @@ export default {
       return message;
     }
   },
+  watch: {
+    visibility(newValue) {
+      this.showDialog = newValue;
+    }
+  }
 };
 </script>

@@ -8,8 +8,7 @@
     </div>
     <div>
       <div class="container" v-for="  variable   in        variables       " :key="variable.varname">
-        <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)"
-          @touchcancel="this.ifToShowDialog(variable)">
+        <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)">
           <!-- <p>{{ variable.value }}</p> -->
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
           </infoTag>
@@ -99,7 +98,9 @@ export default {
     },
     callModel() {
       this.checkAllVars()
+      console.log("result of allvarschecked", this.allVarsChecked)
       if (this.allVarsChecked) {
+        console.log("vsetky premnne su checknute")
         let inputJSON = this.createJSONfromVariables(
           "Some parameters have invalid value. Can not be submitted .",
           this.allVarsInputed
@@ -122,7 +123,7 @@ export default {
       // If the variable is unchecked or was evaluated to be checked again
       if (!variable.checkedBeforeSubmit) {
         // If the value set has already been confirmed, then do not ask again for the confirmation
-        if (variable.value > variable.observed_max * this.$warningOnMultiple || variable.value < variable.observed_min / this.$warningOnMultiple && variable.value != -1) {
+        if (variable.value > variable.observed_max || variable.value < variable.observed_min && variable.value != -1) {
           variable.dialogVisible = true;
           variable.checkedBeforeSubmit = false
         } else {
@@ -137,7 +138,10 @@ export default {
     checkAllVars() {
       this.variables.forEach(variable => {
         if (!variable.checkedBeforeSubmit) {
+          console.log("variable is wrong ", variable.varname)
           variable.dialogVisible = true
+        } else {
+          console.log("variable: ", variable.varname, " is checked and correct")
         }
       })
     }
