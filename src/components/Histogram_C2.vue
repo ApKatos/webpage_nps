@@ -153,6 +153,8 @@ export default {
             display: true,
             ticks: {
               callback: function (value, index, ticks) {
+                // TODO probably look at this so that the values can be logarithmically set
+                console.log("checking x axis values")
                 const label = this.getLabelForValue(value).toString();
                 const num1 = label.split("<")[0];
                 return num1;
@@ -163,9 +165,7 @@ export default {
                 style: 'initial',
               },
               align: 'end',
-              labelOffset: -10,
-              // crossAlign: 'far',
-              // autoSkip: false,
+              labelOffset: -30, //shifting of x labels - TODO - https://jsfiddle.net/Syncd/8z6rm9ck/
               autoSkipPadding: 3, // minimum distance between ticks deciding how many will be skipped
               maxRotation: 75,
               minRotation: 0,
