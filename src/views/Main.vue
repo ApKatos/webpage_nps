@@ -7,7 +7,7 @@
       <var-box :variables="variables" app density="compact"></var-box>
     </div>
     <div>
-      <div class="container" v-for="  variable   in        variables       " :key="variable.varname">
+      <div class="container" v-for="  variable   in               variables              " :key="variable.varname">
         <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)">
           <!-- <p>{{ variable.value }}</p> -->
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
@@ -29,6 +29,10 @@
               :observedMax="variable.observed_max" :unitTickMove="variable.unitTickMove"
               v-on:update:value="(newValue) => this.updateVariableValue(variable, newValue)">
             </MySlider>
+            <input type="number" step="any" id="float-input" name="float-input" v-model="variable.value">
+            <!-- <input type=" number" pattern="[0-9]+([,\.][0-9]+)?" name="my-num" v-model="variable.value"
+            title="The number input must start with a number and use either comma or a dot as a decimal character." />
+          -->
           </div>
         </div>
         <check-range-dialog-vue :visibility="variable.dialogVisible" :valueData="variable.value"
@@ -69,6 +73,9 @@ export default {
     };
   },
   methods: {
+    logEvent() {
+      console.log("event");
+    },
     loadData() {
       Object.entries(jsonData).forEach(([_, value]) => {
         value["value"] = -1;
@@ -77,11 +84,12 @@ export default {
         this.variables.push(value);
       });
     },
-    createJSONfromVariables(message, event) {
-      if (event && this.allVarsInputed) {
+    createJSONfromVariables(message) {
+      if (this.allVarsInputed) {
         let arr = {};
         for (let i = 0; i < this.variables.length; i++) {
           let variable = this.variables[i];
+          console.log(variable)
           arr[variable.varname] = variable.value;
         }
         let JSONModelInput = JSON.stringify(arr);
@@ -93,17 +101,13 @@ export default {
     initModel() {
       this.model = new ModelWrapper();
     },
-    calculatePercentageFraction(value, total) {
-      return Number(parseFloat(value) / parseFloat(total) * 100).toFixed(1)
-    },
     callModel() {
       this.checkAllVars()
       console.log("result of allvarschecked", this.allVarsChecked)
       if (this.allVarsChecked) {
         console.log("vsetky premnne su checknute")
         let inputJSON = this.createJSONfromVariables(
-          "Some parameters have invalid value. Can not be submitted .",
-          this.allVarsInputed
+          "Some parameters have invalid value. Can not be submitted ."
         );
         let resultJSON = this.model.process(inputJSON);
         this.resultJSON = resultJSON;
@@ -133,6 +137,10 @@ export default {
     },
     updateVariableValue(variable, newValue) {
       variable.value = newValue;
+      //TODO nech sa zavola len raz !
+      console.log("bola change, menim premennu ", variable.varname)
+      console.log("variable: ", variable.value)
+      console.log("newValue: ", newValue)
       variable.checkedBeforeSubmit = false;
     },
     checkAllVars() {
@@ -144,7 +152,16 @@ export default {
           console.log("variable: ", variable.varname, " is checked and correct")
         }
       })
-    }
+    },
+    // validateInput(variable) {
+    //   const inputRegex = /^(\d+(\.\d*)?|\.\d+)$/; // Regex for numbers with dot or comma as decimal separator
+    //   console.log(variable.value)
+    //   if (!inputRegex.test(variable.value) || parseFloat(variable.value) < 0) {
+    //     // If input does not match the regex or is negative, set it to the preset value
+    //     variable.value = -1;
+    //   }
+    //   variable.checkedBeforeSubmit = false;
+    // },
   },
   mounted() {
     this.loadData();
