@@ -7,7 +7,7 @@
       <var-box :variables="variables" app density="compact"></var-box>
     </div>
     <div>
-      <div class="container" v-for="  variable   in               variables              " :key="variable.varname">
+      <div class="container" v-for="  variable   in                  variables                 " :key="variable.varname">
         <div class="graph" :id="'input-graph-' + variable.index" @mouseleave="this.ifToShowDialog(variable)">
           <!-- <p>{{ variable.value }}</p> -->
           <infoTag style="position: absolute; width:10px; margin-left: 32%; margin-top: 2px;">{{ variable.decription }}
@@ -27,12 +27,10 @@
             <MySlider :label95q-lower="variable.alert_low" :label95q-upper="variable.alert_high" :minim="variable.min"
               :categorial="variable.categ" :value="variable.value" :observedMin="variable.observed_min"
               :observedMax="variable.observed_max" :unitTickMove="variable.unitTickMove"
-              v-on:update:value="(newValue) => this.updateVariableValue(variable, newValue)">
+              @update:value="(newValue) => this.updateVariableValue(variable, newValue)">
             </MySlider>
-            <input type="number" step="any" id="float-input" name="float-input" v-model="variable.value">
-            <!-- <input type=" number" pattern="[0-9]+([,\.][0-9]+)?" name="my-num" v-model="variable.value"
-            title="The number input must start with a number and use either comma or a dot as a decimal character." />
-          -->
+            <input type="number" :step="variable.unitTickMove" id="float-input" name="float-input" :value="variable.value"
+              @input="(event) => this.updateVariableValue(variable, event.target.value)">
           </div>
         </div>
         <check-range-dialog-vue :visibility="variable.dialogVisible" :valueData="variable.value"
@@ -135,12 +133,24 @@ export default {
         }
       }
     },
+    roundSensitivity(variable) {
+      return Math.log10(1 / variable.unitTickMove)
+    },
     updateVariableValue(variable, newValue) {
-      variable.value = newValue;
       //TODO nech sa zavola len raz !
-      console.log("bola change, menim premennu ", variable.varname)
-      console.log("variable: ", variable.value)
-      console.log("newValue: ", newValue)
+      console.log("TREBA *CHANGE* V PREMENNEJ ", variable.varname)
+      if (variable.categ) {
+        variable.value = newValue;
+      } else {
+        let decimals = this.roundSensitivity(variable)
+
+        if (newValue == "") {
+          variable.value = -1
+        } else {
+          variable.value = Math.max(Number.parseFloat(newValue).toFixed(decimals), 0);
+        }
+        console.log("Pred zmenou to je ", newValue, " ale PO zaokruhleni je ", variable.value)
+      }
       variable.checkedBeforeSubmit = false;
     },
     checkAllVars() {
@@ -153,15 +163,6 @@ export default {
         }
       })
     },
-    // validateInput(variable) {
-    //   const inputRegex = /^(\d+(\.\d*)?|\.\d+)$/; // Regex for numbers with dot or comma as decimal separator
-    //   console.log(variable.value)
-    //   if (!inputRegex.test(variable.value) || parseFloat(variable.value) < 0) {
-    //     // If input does not match the regex or is negative, set it to the preset value
-    //     variable.value = -1;
-    //   }
-    //   variable.checkedBeforeSubmit = false;
-    // },
   },
   mounted() {
     this.loadData();

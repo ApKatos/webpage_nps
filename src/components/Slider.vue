@@ -28,8 +28,6 @@ export default {
   components: { CheckRangeDialogVue },
   data() {
     return {
-      valueData: this.value,
-      color: "#a9a9a9",
       isTouchActive: false,
       incrementInterval: null,
       decrementInterval: null,
@@ -52,7 +50,9 @@ export default {
       required: true,
     },
     value: {
-      default: "",
+      // default: "",
+      Number,
+      required: true,
     },
     unitTickMove: {
       Number,
@@ -95,6 +95,25 @@ export default {
     },
   },
   computed: {
+    valueData: {
+      get() {
+        return Number(this.value);
+      },
+      set(newValue) {
+        this.$emit('update:value', newValue);
+      },
+    },
+    color: function () {
+      if (this.valueData != -1 && this.valueData < this.observedMin / this.$warningOnMultiple || this.valueData > this.observedMax * this.$warningOnMultiple) {
+        return this.colorUnobserved
+      } else if (this.valueData != -1 && (this.valueData <= this.label95qLower || this.valueData >= this.label95qUpper)) {
+        return this.colorWarn
+      } else if (this.valueData != -1 && this.valueData < this.label95qUpper && this.valueData > this.label95qLower) {
+        return this.colorFine
+      } else {
+        return "#a9a9a9"
+      }
+    },
     colorWarn: {
       get() {
         return "#D3A350"
@@ -110,32 +129,6 @@ export default {
         return "rgb(219, 29, 15)"
       }
     },
-    roundSensitivity() {
-      return Math.log10(1 / this.unitTickMove)
-    },
-
   },
-  watch: {
-    valueData: {
-      handler(val) {
-        this.$emit('update:value', val)
-        if (val != -1 && val < this.observedMin / this.$warningOnMultiple || val > this.observedMax * this.$warningOnMultiple) {
-          this.color = this.colorUnobserved
-        } else if (val != -1 && (val <= this.label95qLower || val >= this.label95qUpper)) {
-          this.color = this.colorWarn
-        } else if (val != -1 && val < this.label95qUpper && val > this.label95qLower) {
-          this.color = this.colorFine
-        }
-      }
-    },
-    value: {
-      handler(val, oldVal) {
-        this.valueData = parseFloat(Number(val).toFixed(this.roundSensitivity));
-        if (this.valueData < this.minim) {
-          this.valueData = this.minim
-        }
-      }
-    },
-  }
 };
 </script>

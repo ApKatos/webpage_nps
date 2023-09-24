@@ -32,14 +32,13 @@ export default {
   methods: {
     scrollToGraph(index) {
       const graphElement = document.getElementById('input-graph-' + index);
-      if (graphElement) { 
+      if (graphElement) {
         graphElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "start" });
       }
     },
     getValueOfVariable(variable) {
       let value;
       const undefinedValue = "-1"
-
       if (variable.varname == "GENDER") {
         if (variable.value == 0) value = "MALE"
         else if (variable.value == 1) value = "FEMALE"

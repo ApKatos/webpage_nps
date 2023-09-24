@@ -30,7 +30,7 @@ export default {
   components: { Bar },
   data() {
     return {
-      valueData: Number(this.value),
+      // valueData: Number(this.value),
       labelDataVals: this.dataInp,
       highlightenedIndex: -1,
     };
@@ -106,7 +106,7 @@ export default {
           this.valueData <= downval
         ) {
           this.valueData =
-            ((Number.parseFloat(upval) + Number.parseFloat(downval)) / 2).toFixed(this.roundSensitivity);
+            ((Number.parseFloat(upval) + Number.parseFloat(downval)) / 2);
         }
       }
     },
@@ -230,22 +230,23 @@ export default {
         return "linear"
       }
     },
-    roundSensitivity() {
-      return Math.log10(1 / this.unitTickMove)
-    }
+    valueData: {
+      get() {
+        return Number(this.value);
+      },
+      set(newValue) {
+        this.$emit('update:value', newValue);
+        this.setHighlightBarIndexByValue(newValue);
+      },
+    },
   },
   watch: {
     valueData: {
       handler(val, oldVal) {
-        this.$emit("update:value", val);
-        this.setHighlightBarIndexByValue(val);
+        this.setHighlightBarIndexByValue(val)
+        // this.setHighlightBarIndexByValue(val);
       },
     },
-    value: {
-      handler(val, oldVal) {
-        this.valueData = Number(val)
-      }
-    }
   },
 };
 </script>

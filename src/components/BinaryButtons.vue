@@ -1,17 +1,7 @@
 <template>
   <v-radio-group v-model="valueData" inline>
-    <v-radio
-      style="color: rgba(0, 0, 0, 0.4)"
-      :label="labels[0].toString()"
-      color="green"
-      :value="0"
-    ></v-radio>
-    <v-radio
-      style="color: rgba(0, 0, 0, 0.4)"
-      :label="labels[1].toString()"
-      color="green"
-      :value="1"
-    ></v-radio>
+    <v-radio style="color: rgba(0, 0, 0, 0.4)" :label="labels[0].toString()" color="green" :value="0"></v-radio>
+    <v-radio style="color: rgba(0, 0, 0, 0.4)" :label="labels[1].toString()" color="green" :value="1"></v-radio>
   </v-radio-group>
 </template>
 
@@ -27,13 +17,9 @@ export default {
       required: true,
     },
     value: {
-      default: "",
+      Number,
+      required: true,
     },
-  },
-  data() {
-    return {
-      // valueData: this.value
-    };
   },
   computed: {
     valueData: {
