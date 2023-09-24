@@ -30,7 +30,8 @@
               @update:value="(newValue) => this.updateVariableValue(variable, newValue)">
             </MySlider>
             <input type="number" :step="variable.unitTickMove" id="float-input" name="float-input" :value="variable.value"
-              @input="(event) => this.updateVariableValue(variable, event.target.value)">
+              @input="(event) => this.updateVariableValue(variable, event.target.value)"
+              style="border: 2px solid black; text-align: center;">
           </div>
         </div>
         <check-range-dialog-vue :visibility="variable.dialogVisible" :valueData="variable.value"
