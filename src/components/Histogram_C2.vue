@@ -1,5 +1,5 @@
 <template>
-  <Bar ref="histChart" :data="passData" :options="passOptions" v-model="valueData" />
+  <Bar id="histChart" :data="passData" :options="passOptions" v-model="valueData" />
 </template>
 
 <script>
@@ -118,6 +118,10 @@ export default {
       }
     },
   },
+  mounted() {
+    const element = document.getElementById("histChart");
+    console.log(element)
+  },
   computed: {
     backgroundColorArr() {
       let arr = Array(this.labelsInp.length).fill("rgba(0, 0, 0, 0.4)")
@@ -155,6 +159,7 @@ export default {
         scales: {
           x: {
             // type: this.ScaleType,
+
             gridLines: {
               display: false
             },
@@ -180,13 +185,15 @@ export default {
                   return Number(labelToUse)
                 }
               },
+
               font: {
                 family: "Helvetica",
                 size: 11,
                 style: 'initial',
               },
-              align: 'end',
-              labelOffset: -30, //shifting of x labels - TODO - https://jsfiddle.net/Syncd/8z6rm9ck/
+              // align: 'end',
+              align: 'start',
+              labelOffset: -20, //shifting of x labels - TODO - https://jsfiddle.net/Syncd/8z6rm9ck/
               autoSkipPadding: 3, // minimum distance between ticks deciding how many will be skipped
               maxRotation: 75,
               minRotation: 0,
@@ -266,6 +273,7 @@ export default {
       },
     },
   },
+
   watch: {
     valueData: {
       handler(val, oldVal) {
