@@ -63,7 +63,7 @@ export default {
     unitTickMove: {
       Number,
       default: 0.1,
-    }
+    },
   },
   methods: {
     setHighlightBarIndexByValue(value) {
@@ -73,12 +73,17 @@ export default {
         else if (value = "FEMALE" || value == "1")
           this.highlightenedIndex = 1
       } else {
+        let valueIsSet = false;
         for (let i = 0; i < this.labelsInp.length; i++) {
           // The assignation into interval that looks like x1<=x<x2 !!
           const vals = this.labelsInp[i].split("<=x<")
           if (value >= vals[0] && value < vals[1]) {
+            valueIsSet = true
             this.highlightenedIndex = i
           }
+        }
+        if (!valueIsSet) {
+          this.highlightenedIndex = -1
         }
       }
     },
@@ -265,7 +270,6 @@ export default {
     valueData: {
       handler(val, oldVal) {
         this.setHighlightBarIndexByValue(val)
-        // this.setHighlightBarIndexByValue(val);
       },
     },
   },
