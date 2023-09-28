@@ -74,8 +74,9 @@ export default {
           this.highlightenedIndex = 1
       } else {
         for (let i = 0; i < this.labelsInp.length; i++) {
-          const vals = this.labelsInp[i].split("<x<=")
-          if (value > vals[0] && value <= vals[1]) {
+          // The assignation into interval that looks like x1<=x<x2 !!
+          const vals = this.labelsInp[i].split("<=x<")
+          if (value >= vals[0] && value < vals[1]) {
             this.highlightenedIndex = i
           }
         }
@@ -98,10 +99,11 @@ export default {
           this.valueData = 1;
         }
       } else {
-        let upval = labelData[index].split("=")[1];
+        // interval is in this form x1<=x<x2
+        let upval = labelData[index].split("<")[2];
         let downval = labelData[index].split("<")[0];
         if (
-          this.valueData == "" ||
+          this.valueData == -1 ||
           this.valueData >= upval ||
           this.valueData <= downval
         ) {
@@ -156,8 +158,7 @@ export default {
             ticks: {
               callback: function (value, index, ticks) {
                 // TODO probably look at this so that the values can be logarithmically set
-                // The labels are in form x1<x2<=x3
-                console.log("checking x axis values")
+                // The labels are in form x1<=x2<x3
                 const label = this.getLabelForValue(value).toString();
 
                 // After splitting the label by expected char
@@ -171,7 +172,6 @@ export default {
                 if (numOfSplittedItems == 1)
                   return labelToUse;
                 else {
-                  console.log(labelToUse)
                   return Number(labelToUse)
                 }
               },
