@@ -139,11 +139,11 @@ export default {
     },
     floorPrecised(number, precision) {
       const power = Math.pow(10, precision);
-      return Math.floor(number * power) / power;
+      // - round (-number) rounds .5 numbers still down
+      return -Math.round(-number * power) / power;
     },
     updateVariableValue(variable, newValue) {
       //TODO nech sa zavola len raz !
-      console.log("TREBA *CHANGE* V PREMENNEJ ", variable.varname)
       if (variable.categ) {
         variable.value = newValue;
       } else {
@@ -152,12 +152,12 @@ export default {
         if (newValue == "") {
           variable.value = -1
         } else {
-          // double '-' should encure that cases .5 will be rounded down
           variable.value = Math.max(this.floorPrecised(Number.parseFloat(newValue), decimals), 0);
         }
         console.log("Pred zmenou to je ", newValue, " ale PO zaokruhleni je ", variable.value)
       }
       variable.checkedBeforeSubmit = false;
+
     },
     checkAllVars() {
       this.variables.forEach(variable => {
