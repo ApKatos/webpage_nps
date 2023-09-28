@@ -149,7 +149,7 @@ export default {
       } else {
         let decimals = this.roundSensitivity(variable)
 
-        if (newValue == "") {
+        if (isNaN(newValue)) {
           variable.value = -1
         } else {
           variable.value = Math.max(this.floorPrecised(Number.parseFloat(newValue), decimals), 0);
