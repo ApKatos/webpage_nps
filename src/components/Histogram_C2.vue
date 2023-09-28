@@ -126,11 +126,11 @@ export default {
         labels: this.labelsInp,
         datasets: [
           {
-            data: this.dataInp,
+            data: this.dataInp, // Those are labels to be used on string axis - represented as strings x1<x2<=x3
             label: "Percentage",
             barPercentage: 1, //aligns bars next to each other
             categoryPercentage: 1, //aligns bars next to each other
-            backgroundColor: this.backgroundColorArr,
+            backgroundColor: this.backgroundColorArr, // uses computed property to highlight where actual value belongs
             minBarLength: 5,
             borderColor: "rgba(0, 0, 0)",
             borderWidth: 1,
@@ -147,17 +147,33 @@ export default {
         // this will be passed as one object in the attribute options
         scales: {
           x: {
+            // type: this.ScaleType,
             gridLines: {
               display: false
             },
+
             display: true,
             ticks: {
               callback: function (value, index, ticks) {
                 // TODO probably look at this so that the values can be logarithmically set
+                // The labels are in form x1<x2<=x3
                 console.log("checking x axis values")
                 const label = this.getLabelForValue(value).toString();
-                const num1 = label.split("<")[0];
-                return num1;
+
+                // After splitting the label by expected char
+                // variable numOfSplittedItems serves as indicator of categorical variable
+                // categ variables have only YES/NO, MALE/FEMALE options (result of split of size 1)
+                const splittedItems = label.split("<")
+                const numOfSplittedItems = splittedItems.length
+
+                let labelToUse = splittedItems[0];
+
+                if (numOfSplittedItems == 1)
+                  return labelToUse;
+                else {
+                  console.log(labelToUse)
+                  return Number(labelToUse)
+                }
               },
               font: {
                 family: "Helvetica",
@@ -175,7 +191,6 @@ export default {
             min: 0,
             max: 100,// Your absolute max value
 
-            type: this.yScaleType,
             display: true,
             title: {
               display: true,
@@ -187,7 +202,7 @@ export default {
             },
             ticks: {
               callback: function (value) {
-                return (value / this.max * 100).toFixed(0) + '%'; // convert it to percentage
+                return (value).toFixed(0) + '%'; // convert it to percentage
               },
               font: {
                 family: "Helvetica",
@@ -198,6 +213,9 @@ export default {
           },
         },
         plugins: {
+          customBars: {
+            width: 100, // Adjust the width of bars as needed
+          },
           title: {
             display: true,
             text: this.dataName + "  " + this.unit,
@@ -215,7 +233,10 @@ export default {
             enabled: true,
             callbacks: {
               // label: (tooltipItem) => `Percentage: ${tooltipItem.parsed.y}%`
-              label: (tooltipItem) => `${tooltipItem.parsed.y}%`
+              label: (items) => `${items.parsed.y}%`,
+              // title: (items) => {
+              //   console.log(items)
+              // }
             }
           }
         },
@@ -223,11 +244,11 @@ export default {
         onClick: this.handleChartClick,
       };
     },
-    yScaleType() {
+    ScaleType() {
       if (this.scaleLog == true) {
         return "logarithmic"
       } else if (this.scaleLog == false) {
-        return "linear"
+        return "category"
       }
     },
     valueData: {
