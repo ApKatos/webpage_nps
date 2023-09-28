@@ -137,6 +137,10 @@ export default {
     roundSensitivity(variable) {
       return Math.log10(1 / variable.unitTickMove)
     },
+    floorPrecised(number, precision) {
+      const power = Math.pow(10, precision);
+      return Math.floor(number * power) / power;
+    },
     updateVariableValue(variable, newValue) {
       //TODO nech sa zavola len raz !
       console.log("TREBA *CHANGE* V PREMENNEJ ", variable.varname)
@@ -148,7 +152,8 @@ export default {
         if (newValue == "") {
           variable.value = -1
         } else {
-          variable.value = Math.max(Number.parseFloat(newValue).toFixed(decimals), 0);
+          // double '-' should encure that cases .5 will be rounded down
+          variable.value = Math.max(this.floorPrecised(Number.parseFloat(newValue), decimals), 0);
         }
         console.log("Pred zmenou to je ", newValue, " ale PO zaokruhleni je ", variable.value)
       }
